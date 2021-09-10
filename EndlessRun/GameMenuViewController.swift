@@ -1,15 +1,18 @@
 //
-//  GameViewController.swift
+//  GameOverViewController.swift
 //  EndlessRun
 //
-//  Created by Ana Clara Filgueiras Granato on 01/09/21.
+//  Created by Ana Clara Filgueiras Granato on 09/09/21.
 //
+
+import Foundation
+
 
 import UIKit
 import SpriteKit
 import GameplayKit
 
-class GameViewController: UIViewController {
+class GameMenuViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,7 +22,6 @@ class GameViewController: UIViewController {
         skView.ignoresSiblingOrder = true
         scene.scaleMode = .resizeFill
         skView.presentScene(scene)
-        //skView.showsPhysics = false
     }
     
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
@@ -31,4 +33,3 @@ class GameViewController: UIViewController {
         
     }
 }
-
