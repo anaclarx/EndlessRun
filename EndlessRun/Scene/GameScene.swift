@@ -11,19 +11,12 @@ import GameplayKit
 
 class GameScene: SKScene {
     
-    struct PhysicsCategory {
-        static let none      : UInt32 = 0
-        static let all       : UInt32 = UInt32.max
-        static let monster   : UInt32 = 0x1 << 0       // 1
-        static let projectile: UInt32 = 0x1 << 1
-        static let platformCategory : UInt32 = 0x1 << 2
-        static let point: UInt32 = 0x1 << 3
-    }
-    
     // 1
     let player = SKSpriteNode(imageNamed: "boneco.png")
     
-    let platform = SKSpriteNode(color: .black, size: CGSize(width: 2000, height:15))
+    private let platform: Ground = Ground()
+    
+    private let obstaculo: Obstacle = Obstacle()
     
     var pressed = false
     
@@ -33,7 +26,36 @@ class GameScene: SKScene {
     
     var score = 0
     
+    var isPlayerDoubleJumping = false
     
+    var arrayObst:[Obstacle] = []
+    
+    var isJumping = false
+    
+    lazy var scoreLabel: SKLabelNode = {
+        var label = SKLabelNode(fontNamed: "Arial-BoldMT")
+        label.fontSize = 20
+        label.fontColor = SKColor.black
+        label.position = CGPoint(x:  -190, y: 120 )
+        label.text = "Points: 0"
+        return label
+    }()
+    
+    var gameOver: SKSpriteNode = {
+        let gameOver = SKSpriteNode(imageNamed: "gameOver")
+        gameOver.size = CGSize(width: UIScreen.main.bounds.width / 3, height: UIScreen.main.bounds.height / 3)
+        gameOver.position = CGPoint(x: 0, y: 0 + 20)
+        return gameOver
+    }()
+    
+    lazy var tapLabel: SKLabelNode = {
+        var label = SKLabelNode(fontNamed: "Arial-BoldMT")
+        label.fontSize = 20
+        label.fontColor = SKColor.black
+        label.position = CGPoint(x:  gameOver.position.x, y: -50 )
+        label.text = "Tap anywhere to try again"
+        return label
+    }()
     
     //MARK: Methods
     
@@ -41,62 +63,36 @@ class GameScene: SKScene {
         
         physicsWorld.contactDelegate = self
         physicsWorld.speed = 0.5
-        //Setup borders so character can't escape from us :-)
+        //Setup borders so elements can't escape from us :-)
         self.physicsBody = SKPhysicsBody(edgeLoopFrom: self.frame)
-        //        self.physicsBody?.categoryBitMask = PhysicsCategory.wallCategory
-        //        self.physicsBody?.collisionBitMask = PhysicsCategory.characterCategory
-        
         
         // 2
         backgroundColor = SKColor.white
         // 3
-        player.position = CGPoint(x: size.width * 0.1, y: (UIScreen.main.bounds.width/2) + platform.size.height/2)
+        player.position = CGPoint(x: -100, y: platform.position.y + platform.size.height)
         player.size = CGSize(width: 25, height: 25)
         player.physicsBody = SKPhysicsBody(rectangleOf: player.size)
         player.physicsBody?.isDynamic = true
         player.physicsBody?.categoryBitMask = PhysicsCategory.monster
         player.physicsBody?.contactTestBitMask = PhysicsCategory.projectile | PhysicsCategory.platformCategory
         player.physicsBody?.collisionBitMask =  PhysicsCategory.platformCategory
-        
-        // 4
         addChild(player)
+        // 4
         
+        addChild(scoreLabel)
+        setUpScenario()
+        if isGameEnded == false{
         run(SKAction.repeatForever(
             SKAction.sequence([
                 SKAction.run(addObstaculo),
-                SKAction.wait(forDuration: 2.5),
+                SKAction.wait(forDuration: 1),
                 SKAction.run(addPoint),
                 SKAction.wait(forDuration: 1.5)
             ])
         ))
-        generatePlatforms()
+        }
     }
     
-    
-    func generatePlatforms(){
-        
-        let position = CGPoint(x: frame.midX, y: UIScreen.main.bounds.height / 3)
-        let platform = createPlatformAtPosition(position: position)
-        self.addChild(platform)
-        
-    }
-    
-    func createPlatformAtPosition(position : CGPoint)->SKSpriteNode{
-        
-        
-        platform.position = position
-        
-        platform.physicsBody =  SKPhysicsBody(rectangleOf: platform.size)
-        
-        platform.physicsBody?.categoryBitMask       = PhysicsCategory.platformCategory
-        platform.physicsBody?.contactTestBitMask    = PhysicsCategory.monster | PhysicsCategory.projectile
-        platform.physicsBody?.collisionBitMask      = PhysicsCategory.monster | PhysicsCategory.projectile
-        platform.physicsBody?.allowsRotation        = false
-        platform.name                               = "platform"
-        platform.physicsBody?.isDynamic             = false
-        
-        return platform
-    }
     
     func random() -> CGFloat {
         return CGFloat(Float(arc4random()) / 0xFFFFFFFF)
@@ -105,29 +101,61 @@ class GameScene: SKScene {
     func random(min: CGFloat, max: CGFloat) -> CGFloat{
         return random() * (max - min) + min
     }
-
-    func endGame(hitobstaculp: Bool){
+    
+    func endGame(hitobstaculo: Bool){
         
         if isGameEnded{return}
         
         isGameEnded = true
         physicsWorld.speed = 0
-        isUserInteractionEnabled = false
+        isUserInteractionEnabled = true
+        arrayObst.removeAll()
+        //removeAllChildren()
         
-        let gameOver = SKSpriteNode(imageNamed: "gameOver")
-        gameOver.size = CGSize(width: UIScreen.main.bounds.width / 3, height: UIScreen.main.bounds.height / 3)
-        gameOver.position = CGPoint(x: UIScreen.main.bounds.width / 2, y: (UIScreen.main.bounds.height / 2) - 40)
         addChild(gameOver)
+        addChild(tapLabel)
         
         
     }
     
+    func reset(){
+        self.gameOver.removeFromParent()
+        self.tapLabel.removeFromParent()
+        //self.pauseLayer?.isHidden = true
+        //pauseButton.texture = SKTexture(imageNamed: "Pause")
+        scene?.physicsWorld.speed = 0.5
+        self.isGameEnded = false
+        self.score = 0
+        adjustScore(by: score)
+        addObstaculo()
+        resetPlayer()
+        addPoint()
+        
+        
+    }
+    
+    func resetPlayer(){
+        addChild(player)
+    }
+    
+    func setUpScenario(){
+        addChild(platform)
+    }
+    
 }
+
+// MARK: Jump and Touchs Handler
 
 extension GameScene: SKPhysicsContactDelegate {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { self.touchDown(atPoint: t.location(in: self)) }
+        if(isGameEnded){
+            reset()
+            return
+        }
+        for t in touches {
+            print("entrou")
+            self.touchDown(atPoint: t.location(in: self)) }
     }
     
     
@@ -139,15 +167,48 @@ extension GameScene: SKPhysicsContactDelegate {
     }
     
     func jump(){
+        
         if(self.isCharacterOnGround){
             player.texture = SKTexture(imageNamed: "boneco")
-            player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 15))
+            player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 12))
+            isJumping = true
             self.isCharacterOnGround = false
+            return
+        }
+        
+        if(isJumping == true && isPlayerDoubleJumping == false && isCharacterOnGround == false){
+            player.texture = SKTexture(imageNamed: "boneco")
+            player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 12))
+            isJumping = false
+            isPlayerDoubleJumping = false
+            return
+        }
+    }
+    
+    func CGPointDistanceSquared(from: CGPoint, to: CGPoint) -> CGFloat {
+        return (from.x - to.x) * (from.x - to.x) + (from.y - to.y) * (from.y - to.y)
+    }
+    
+    func CGPointDistance(from: CGPoint, to: CGPoint) -> CGFloat {
+        return sqrt(CGPointDistanceSquared(from: from, to: to))
+    }
+    
+    func attack(){
+        if arrayObst.count == 0 {return}
+        else{
+            if(CGPointDistance(from: player.position, to: arrayObst[0].position) <= CGFloat(100)){
+                removeObstArray()
+            }
         }
     }
     
     func touchDown(atPoint pos: CGPoint) {
-        jump()
+        if pos.x >= 0{
+            jump()
+        }
+        else{
+            attack()
+        }
     }
     
     
@@ -181,7 +242,7 @@ extension GameScene: SKPhysicsContactDelegate {
         
         if((firstBody.categoryBitMask & PhysicsCategory.monster != 0) && (secondBody.categoryBitMask & PhysicsCategory.point != 0 )){
             if let monster = firstBody.node as? SKSpriteNode, let point = secondBody.node as? SKSpriteNode{
-               playerCollideWithPoint(point: point , monster: monster)
+                playerCollideWithPoint(point: point , monster: monster)
             }
         }
         
@@ -236,40 +297,24 @@ extension GameScene: SKPhysicsContactDelegate {
 
 extension GameScene{
     
+    func removeObstArray(){
+        arrayObst[0].removeFromParent()
+        arrayObst.removeFirst()
+    }
+    
     func addObstaculo() {
-        //Create Sprite
         
-        let obstaculo = SKSpriteNode(imageNamed: "obstaculo.png")
-        
-        obstaculo.size = CGSize(width: 25, height: 25)
-        obstaculo.physicsBody = SKPhysicsBody(rectangleOf: obstaculo.size)
-        obstaculo.physicsBody?.isDynamic = false
-        obstaculo.physicsBody?.categoryBitMask = PhysicsCategory.projectile
-        obstaculo.physicsBody?.contactTestBitMask = PhysicsCategory.monster | PhysicsCategory.platformCategory
-        obstaculo.physicsBody?.collisionBitMask =  PhysicsCategory.platformCategory
-        obstaculo.physicsBody?.affectedByGravity = true
-        
-        //let actualY = size.height * 0.5 - 5
-        
-        obstaculo.position = CGPoint(x: size.width + obstaculo.size.width/2, y:  platform.position.y + platform.size.height/2 + obstaculo.size.height/2)
-        
-        
-        
+        if isGameEnded{return}
+        let obstaculo = Obstacle()
+        arrayObst.append(obstaculo)
         addChild(obstaculo)
-        
-        let actualDuration = random(min: CGFloat(3.0), max: CGFloat(7.0))
-        
-        let actionMove = SKAction.move(to: CGPoint(x: obstaculo.size.width - 50, y: platform.position.y + platform.size.height/2 + obstaculo.size.height/2), duration: TimeInterval(actualDuration))
-        
-        let actionMoveDone = SKAction.removeFromParent()
-        
-        obstaculo.run(SKAction.sequence([actionMove, actionMoveDone]))
+        obstaculo.runOverScene(completion: removeObstArray)
         
     }
     
     func playerCollideWithObstaculo(projectile: SKSpriteNode, monster: SKSpriteNode){
         monster.removeFromParent()
-        endGame(hitobstaculp: isGameEnded)
+        endGame(hitobstaculo: isGameEnded)
     }
     
 }
@@ -291,44 +336,37 @@ extension GameScene{
         point.physicsBody?.collisionBitMask =  PhysicsCategory.none
         point.physicsBody?.affectedByGravity = false
         
-        //let actualY = size.height * 0.5 - 5
-        
         point.position = CGPoint(x: size.width + point.size.width/2, y:  platform.position.y + 60 +  random(min: CGFloat(0), max: CGFloat(20.0)))
         
         
         
         addChild(point)
         
-        let actualDuration = random(min: CGFloat(1.0), max: CGFloat(5.0))
+        let actualDuration = random(min: CGFloat(3.0), max: CGFloat(7.0))
         
-        let actionMove = SKAction.move(to: CGPoint(x: point.size.width - 50, y: platform.position.y + 60 +  random(min: CGFloat(0), max: CGFloat(5.0))), duration: TimeInterval(actualDuration))
+        let actionMove = SKAction.move(to: CGPoint(x: point.size.width - 1000, y: platform.position.y + 60 +  random(min: CGFloat(0), max: CGFloat(5.0))), duration: TimeInterval(actualDuration))
         
         let actionMoveDone = SKAction.removeFromParent()
         
-        point.run(SKAction.sequence([actionMove, actionMoveDone]))
+        if isGameEnded{return}
         
-    }
-    
-    func reloadScore(score: Int){
-        let scoreLabel = SKLabelNode(fontNamed: "Chalkduster")
-        scoreLabel.text = "Points = \(score)"
-        scoreLabel.fontSize = 20
-        scoreLabel.fontColor = SKColor.black
-        scoreLabel.position = CGPoint(x:60 , y:10 )
-        addChild(scoreLabel)
+        else{point.run(SKAction.sequence([actionMove, actionMoveDone]))}
+        
     }
     
     func adjustScore(by points: Int) {
         score += points
-        reloadScore(score: score)
+        scoreLabel.text = "Points: \(score)"
         
     }
     func playerCollideWithPoint(point: SKSpriteNode, monster: SKSpriteNode) {
         print("Hit")
-
+        
         point.removeFromParent()
         adjustScore(by: 1)
-
-        }
+        
+    }
     
 }
+
+

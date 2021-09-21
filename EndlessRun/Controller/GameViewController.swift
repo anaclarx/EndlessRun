@@ -13,12 +13,13 @@ class GameViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let scene = GameScene(size: view.bounds.size)
+        let scene = GameScene(size: UIScreen.main.bounds.size)
         let skView = view as! SKView
         skView.showsNodeCount = true
         skView.ignoresSiblingOrder = true
         scene.scaleMode = .resizeFill
         skView.presentScene(scene)
+        scene.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         //skView.showsPhysics = false
     }
     
