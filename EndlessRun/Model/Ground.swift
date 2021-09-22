@@ -10,7 +10,6 @@ import SpriteKit
 
 class Ground: SKSpriteNode {
     
-    
     init (){
         
         super.init(texture: .none, color: .black, size: CGSize(width: 2000, height:15))

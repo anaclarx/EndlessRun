@@ -11,12 +11,14 @@ import GameplayKit
 
 class GameScene: SKScene {
     
-    // 1
+    //MARK: Components
     let player = SKSpriteNode(imageNamed: "boneco.png")
     
     private let platform: Ground = Ground()
     
     private let obstaculo: Obstacle = Obstacle()
+    
+    private let point: Points = Points()
     
     var pressed = false
     
@@ -29,6 +31,8 @@ class GameScene: SKScene {
     var isPlayerDoubleJumping = false
     
     var arrayObst:[Obstacle] = []
+    
+    var arrayPoints:[Points] = []
     
     var isJumping = false
     
@@ -81,48 +85,39 @@ class GameScene: SKScene {
         
         addChild(scoreLabel)
         setUpScenario()
-        if isGameEnded == false{
-        run(SKAction.repeatForever(
-            SKAction.sequence([
-                SKAction.run(addObstaculo),
-                SKAction.wait(forDuration: 1),
-                SKAction.run(addPoint),
-                SKAction.wait(forDuration: 1.5)
-            ])
-        ))
-        }
-    }
-    
-    
-    func random() -> CGFloat {
-        return CGFloat(Float(arc4random()) / 0xFFFFFFFF)
-    }
-    
-    func random(min: CGFloat, max: CGFloat) -> CGFloat{
-        return random() * (max - min) + min
     }
     
     func endGame(hitobstaculo: Bool){
-        
-        if isGameEnded{return}
-        
+        if isGameEnded{
+            return
+        }
         isGameEnded = true
         physicsWorld.speed = 0
         isUserInteractionEnabled = true
+        for obs in arrayObst {
+            obs.removeFromParent()
+        }
         arrayObst.removeAll()
-        //removeAllChildren()
-        
         addChild(gameOver)
         addChild(tapLabel)
-        
-        
+    }
+    
+    func runActionNodes(){
+        if(isGameEnded == false){
+            run(SKAction.repeatForever(
+                SKAction.sequence([
+                    SKAction.run(addObstaculo),
+                    SKAction.wait(forDuration: 1),
+                    SKAction.run(addPoint),
+                    SKAction.wait(forDuration: 1.5)
+                ])
+            ))
+        }
     }
     
     func reset(){
         self.gameOver.removeFromParent()
         self.tapLabel.removeFromParent()
-        //self.pauseLayer?.isHidden = true
-        //pauseButton.texture = SKTexture(imageNamed: "Pause")
         scene?.physicsWorld.speed = 0.5
         self.isGameEnded = false
         self.score = 0
@@ -130,8 +125,6 @@ class GameScene: SKScene {
         addObstaculo()
         resetPlayer()
         addPoint()
-        
-        
     }
     
     func resetPlayer(){
@@ -139,6 +132,7 @@ class GameScene: SKScene {
     }
     
     func setUpScenario(){
+        runActionNodes()
         addChild(platform)
     }
     
@@ -185,13 +179,6 @@ extension GameScene: SKPhysicsContactDelegate {
         }
     }
     
-    func CGPointDistanceSquared(from: CGPoint, to: CGPoint) -> CGFloat {
-        return (from.x - to.x) * (from.x - to.x) + (from.y - to.y) * (from.y - to.y)
-    }
-    
-    func CGPointDistance(from: CGPoint, to: CGPoint) -> CGFloat {
-        return sqrt(CGPointDistanceSquared(from: from, to: to))
-    }
     
     func attack(){
         if arrayObst.count == 0 {return}
@@ -214,10 +201,6 @@ extension GameScene: SKPhysicsContactDelegate {
     
     func touchUp(atPoint pos: CGPoint) {
         player.texture = SKTexture(imageNamed: "boneco")
-    }
-    
-    override func update(_ currentTime: TimeInterval) {
-        
     }
     
     func didBegin(_ contact: SKPhysicsContact){
@@ -247,7 +230,7 @@ extension GameScene: SKPhysicsContactDelegate {
         }
         
         if ((firstBody.categoryBitMask & PhysicsCategory.monster) != 0 &&
-                (secondBody.categoryBitMask & PhysicsCategory.platformCategory != 0)){
+            (secondBody.categoryBitMask & PhysicsCategory.platformCategory != 0)){
             
             player.physicsBody?.collisionBitMask = PhysicsCategory.platformCategory
             self.isCharacterOnGround = true
@@ -274,7 +257,7 @@ extension GameScene: SKPhysicsContactDelegate {
         }
         
         if ((firstBody.categoryBitMask & PhysicsCategory.monster) != 0 &&
-                (secondBody.categoryBitMask & PhysicsCategory.platformCategory != 0)) {
+            (secondBody.categoryBitMask & PhysicsCategory.platformCategory != 0)) {
             
             let platform = secondBody.node as! SKSpriteNode
             let platformSurfaceYPos = platform.position.y + platform.size.height/2.0
@@ -298,6 +281,7 @@ extension GameScene: SKPhysicsContactDelegate {
 extension GameScene{
     
     func removeObstArray(){
+        if arrayObst.count == 0 {return}
         arrayObst[0].removeFromParent()
         arrayObst.removeFirst()
     }
@@ -324,33 +308,12 @@ extension GameScene{
 extension GameScene{
     
     func addPoint() {
-        //Create Sprite
-        
-        let point = SKSpriteNode(imageNamed: "folha")
-        
-        point.size = CGSize(width: 25, height: 25)
-        point.physicsBody = SKPhysicsBody(rectangleOf: point.size)
-        point.physicsBody?.isDynamic = false
-        point.physicsBody?.categoryBitMask = PhysicsCategory.point
-        point.physicsBody?.contactTestBitMask = PhysicsCategory.monster
-        point.physicsBody?.collisionBitMask =  PhysicsCategory.none
-        point.physicsBody?.affectedByGravity = false
-        
-        point.position = CGPoint(x: size.width + point.size.width/2, y:  platform.position.y + 60 +  random(min: CGFloat(0), max: CGFloat(20.0)))
-        
-        
-        
-        addChild(point)
-        
-        let actualDuration = random(min: CGFloat(3.0), max: CGFloat(7.0))
-        
-        let actionMove = SKAction.move(to: CGPoint(x: point.size.width - 1000, y: platform.position.y + 60 +  random(min: CGFloat(0), max: CGFloat(5.0))), duration: TimeInterval(actualDuration))
-        
-        let actionMoveDone = SKAction.removeFromParent()
-        
+
         if isGameEnded{return}
-        
-        else{point.run(SKAction.sequence([actionMove, actionMoveDone]))}
+        let point = Points()
+        arrayPoints.append(point)
+        addChild(point)
+        point.runOverScene(completion: removeObstArray)
         
     }
     
@@ -366,7 +329,21 @@ extension GameScene{
         adjustScore(by: 1)
         
     }
-    
+
 }
 
+//MARK: Secondary Functions:
+
+extension GameScene{
+    
+    func CGPointDistanceSquared(from: CGPoint, to: CGPoint) -> CGFloat {
+        return (from.x - to.x) * (from.x - to.x) + (from.y - to.y) * (from.y - to.y)
+    }
+    
+    func CGPointDistance(from: CGPoint, to: CGPoint) -> CGFloat {
+        return sqrt(CGPointDistanceSquared(from: from, to: to))
+    }
+    
+    
+}
 
