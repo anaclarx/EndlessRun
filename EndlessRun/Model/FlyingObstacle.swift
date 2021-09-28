@@ -1,15 +1,15 @@
 //
-//  Points.swift
+//  FlyingObstacle.swift
 //  EndlessRun
 //
-//  Created by Ana Clara Filgueiras Granato on 22/09/21.
+//  Created by Ana Clara Filgueiras Granato on 23/09/21.
 //
 
 import Foundation
 import SpriteKit
 
-class Points: SKSpriteNode{
-
+class FlyingObstacle: SKSpriteNode{
+    
     private let platform: Ground = Ground()
     
     
@@ -23,10 +23,10 @@ class Points: SKSpriteNode{
     
     func runOverScene(completion: @escaping ()->()){
         //Roda pela Scene de ponta a ponta, se ela existe.
-        let actualDuration = random(min: CGFloat(3.0), max: CGFloat(12.0))
+        let actualDuration = random(min: CGFloat(2.0), max: CGFloat(7.0))
         guard let parent = self.parent else {return}
         self.position.x = parent.frame.maxX + self.size.width
-        let destination = CGPoint(x: 2*parent.frame.minX , y: platform.position.y + 60 +  random(min: CGFloat(0), max: CGFloat(20.0)))
+        let destination = CGPoint(x: 2*parent.frame.minX , y: platform.position.y + platform.size.height/2 + self.size.height/2 + 60 )
         let runAction = SKAction.move(to: destination, duration: TimeInterval(actualDuration))
         run(runAction, completion: completion)
     }
@@ -34,19 +34,18 @@ class Points: SKSpriteNode{
     
     init(){
         
-        let texture = SKTexture(imageNamed: "folha")
+        let texture = SKTexture(imageNamed: "motoserra")
         
         super.init(texture: texture, color: .clear, size: texture.size())
-        self.size = CGSize(width: 25, height: 25)
+        self.size = CGSize(width: 35, height: 35)
         self.physicsBody = SKPhysicsBody(rectangleOf: self.size)
         self.physicsBody?.isDynamic = false
-        self.physicsBody?.categoryBitMask = PhysicsCategory.point
-        self.physicsBody?.contactTestBitMask = PhysicsCategory.monster
-        self.physicsBody?.collisionBitMask =  PhysicsCategory.monster
-        self.physicsBody?.affectedByGravity = false
+        self.physicsBody?.categoryBitMask = PhysicsCategory.projectile
+        self.physicsBody?.contactTestBitMask = PhysicsCategory.monster | PhysicsCategory.platformCategory
+        self.physicsBody?.collisionBitMask =  PhysicsCategory.platformCategory
+        self.physicsBody?.affectedByGravity = true
         
-        self.position = CGPoint(x: size.width + self.size.width/2, y:  platform.position.y + 60 +  random(min: CGFloat(0), max: CGFloat(20.0)))
-
+        self.position = CGPoint(x:size.width + self.size.width/2, y:  platform.position.y + 60 +  random(min: CGFloat(5), max: CGFloat(20.0)))
         
     }
     

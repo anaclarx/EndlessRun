@@ -23,6 +23,7 @@
 		0A5C5F7F26F4F6EB00171D67 /* Obstacle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5C5F7E26F4F6EB00171D67 /* Obstacle.swift */; };
 		0A5C5F8126F4F8A500171D67 /* PhysicsCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5C5F8026F4F8A500171D67 /* PhysicsCategory.swift */; };
 		0A5C5F8326F4FA0200171D67 /* Ground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5C5F8226F4FA0200171D67 /* Ground.swift */; };
+		0ABD61BF26FCEBE70008BC77 /* FlyingObstacle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABD61BE26FCEBE70008BC77 /* FlyingObstacle.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +66,7 @@
 		0A5C5F7E26F4F6EB00171D67 /* Obstacle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Obstacle.swift; sourceTree = "<group>"; };
 		0A5C5F8026F4F8A500171D67 /* PhysicsCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicsCategory.swift; sourceTree = "<group>"; };
 		0A5C5F8226F4FA0200171D67 /* Ground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ground.swift; sourceTree = "<group>"; };
+		0ABD61BE26FCEBE70008BC77 /* FlyingObstacle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlyingObstacle.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -153,6 +155,7 @@
 				0A5C5F7E26F4F6EB00171D67 /* Obstacle.swift */,
 				0A175D8A26FBA1BC00DBDB4A /* Points.swift */,
 				0A5C5F8026F4F8A500171D67 /* PhysicsCategory.swift */,
+				0ABD61BE26FCEBE70008BC77 /* FlyingObstacle.swift */,
 				0A5C5F8226F4FA0200171D67 /* Ground.swift */,
 			);
 			path = Model;
@@ -308,6 +311,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0A5C5F7F26F4F6EB00171D67 /* Obstacle.swift in Sources */,
+				0ABD61BF26FCEBE70008BC77 /* FlyingObstacle.swift in Sources */,
 				0A5C5F8126F4F8A500171D67 /* PhysicsCategory.swift in Sources */,
 				0A2CA94A26E0065E0025291B /* GameScene.swift in Sources */,
 				0A5C5F7D26F3AEB100171D67 /* GameStateScenen.swift in Sources */,

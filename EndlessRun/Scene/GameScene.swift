@@ -18,6 +18,8 @@ class GameScene: SKScene {
     
     private let obstaculo: Obstacle = Obstacle()
     
+    private let flyingobstaculo: FlyingObstacle = FlyingObstacle()
+    
     private let point: Points = Points()
     
     var pressed = false
@@ -30,7 +32,7 @@ class GameScene: SKScene {
     
     var isPlayerDoubleJumping = false
     
-    var arrayObst:[Obstacle] = []
+    var arrayObst:[FlyingObstacle] = []
     
     var arrayPoints:[Points] = []
     
@@ -69,7 +71,6 @@ class GameScene: SKScene {
         physicsWorld.speed = 0.5
         //Setup borders so elements can't escape from us :-)
         self.physicsBody = SKPhysicsBody(edgeLoopFrom: self.frame)
-        
         // 2
         backgroundColor = SKColor.white
         // 3
@@ -82,7 +83,6 @@ class GameScene: SKScene {
         player.physicsBody?.collisionBitMask =  PhysicsCategory.platformCategory
         addChild(player)
         // 4
-        
         addChild(scoreLabel)
         setUpScenario()
     }
@@ -107,12 +107,20 @@ class GameScene: SKScene {
             run(SKAction.repeatForever(
                 SKAction.sequence([
                     SKAction.run(addObstaculo),
-                    SKAction.wait(forDuration: 1),
+                    SKAction.wait(forDuration: random(min: 3, max: 7))
+                ])
+            ))
+            
+            run(SKAction.repeatForever(
+                SKAction.sequence([
+                    SKAction.run(addFlyingObstaculo),
+                    SKAction.wait(forDuration: 1.5),
                     SKAction.run(addPoint),
-                    SKAction.wait(forDuration: 1.5)
+                    SKAction.wait(forDuration: 2)
                 ])
             ))
         }
+        
     }
     
     func reset(){
@@ -171,12 +179,23 @@ extension GameScene: SKPhysicsContactDelegate {
         }
         
         if(isJumping == true && isPlayerDoubleJumping == false && isCharacterOnGround == false){
-            player.texture = SKTexture(imageNamed: "boneco")
-            player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 12))
-            isJumping = false
-            isPlayerDoubleJumping = false
-            return
+            if(player.position.y > platform.position.y + platform.size.height + 8){
+                jumpImpulse(impulso: 9)
+                return
+            }
+            else{
+                jumpImpulse(impulso: player.position.y + 10)
+                return
+            }
         }
+    }
+    
+    func jumpImpulse(impulso: CGFloat){
+        player.texture = SKTexture(imageNamed: "boneco")
+        player.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
+        player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: impulso))
+        isJumping = false
+        isPlayerDoubleJumping = false
     }
     
     
@@ -186,6 +205,7 @@ extension GameScene: SKPhysicsContactDelegate {
             if(CGPointDistance(from: player.position, to: arrayObst[0].position) <= CGFloat(100)){
                 removeObstArray()
             }
+            else{return}
         }
     }
     
@@ -280,25 +300,36 @@ extension GameScene: SKPhysicsContactDelegate {
 
 extension GameScene{
     
-    func removeObstArray(){
-        if arrayObst.count == 0 {return}
-        arrayObst[0].removeFromParent()
-        arrayObst.removeFirst()
-    }
-    
     func addObstaculo() {
         
         if isGameEnded{return}
         let obstaculo = Obstacle()
-        arrayObst.append(obstaculo)
         addChild(obstaculo)
-        obstaculo.runOverScene(completion: removeObstArray)
+        obstaculo.runOverScene()
         
     }
     
     func playerCollideWithObstaculo(projectile: SKSpriteNode, monster: SKSpriteNode){
         monster.removeFromParent()
         endGame(hitobstaculo: isGameEnded)
+    }
+    
+    func removeObstArray(){
+        if arrayObst.count == 0 {return}
+        self.backgroundColor = UIColor.blue
+        arrayObst[0].removeFromParent()
+        arrayObst[0].removeAllActions()
+        arrayObst.removeFirst()
+    }
+    
+    func addFlyingObstaculo() {
+        
+        if isGameEnded{return}
+        let flyobstaculo = FlyingObstacle()
+        arrayObst.append(flyobstaculo)
+        addChild(flyobstaculo)
+        flyobstaculo.runOverScene(completion: removeObstArray)
+        
     }
     
 }
@@ -344,6 +375,13 @@ extension GameScene{
         return sqrt(CGPointDistanceSquared(from: from, to: to))
     }
     
+    func random() -> CGFloat {
+        return CGFloat(Float(arc4random()) / 0xFFFFFFFF)
+    }
+    
+    func random(min: CGFloat, max: CGFloat) -> CGFloat{
+        return random() * (max - min) + min
+    }
     
 }
 

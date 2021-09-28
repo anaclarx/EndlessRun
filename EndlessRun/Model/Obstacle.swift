@@ -21,14 +21,15 @@ class Obstacle: SKSpriteNode{
         return random() * (max - min) + min
     }
     
-    func runOverScene(completion: @escaping ()->()){
+    func runOverScene(){
         //Roda pela Scene de ponta a ponta, se ela existe.
-        let actualDuration = random(min: CGFloat(3.0), max: CGFloat(4.0))
+        let actualDuration = 4
         guard let parent = self.parent else {return}
         self.position.x = parent.frame.maxX + self.size.width
         let destination = CGPoint(x: 2*parent.frame.minX , y: platform.position.y + platform.size.height/2 + self.size.height/2 )
         let runAction = SKAction.move(to: destination, duration: TimeInterval(actualDuration))
-        run(runAction, completion: completion)
+        let deleteAction = SKAction.removeFromParent()
+        run(SKAction.repeatForever(SKAction.sequence([runAction, deleteAction])))
     }
     
     

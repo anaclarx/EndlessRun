@@ -20,7 +20,6 @@ class GameViewController: UIViewController {
         scene.scaleMode = .resizeFill
         skView.presentScene(scene)
         scene.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-        //skView.showsPhysics = false
     }
     
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
