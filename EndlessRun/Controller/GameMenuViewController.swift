@@ -16,7 +16,7 @@ class GameMenuViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let scene = GameScene(size: view.bounds.size)
+        let scene = GameMenuScene(size: view.frame.size)
         let skView = view as! SKView
         skView.showsNodeCount = true
         skView.ignoresSiblingOrder = true

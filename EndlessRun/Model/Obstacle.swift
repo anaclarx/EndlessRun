@@ -11,7 +11,8 @@ import SpriteKit
 class Obstacle: SKSpriteNode{
     
     private let platform: Ground = Ground()
-    
+    var tocoFrames: [SKTexture] = []
+    private var toco = SKSpriteNode()
     
     func random() -> CGFloat {
         return CGFloat(Float(arc4random()) / 0xFFFFFFFF)
@@ -23,7 +24,7 @@ class Obstacle: SKSpriteNode{
     
     func runOverScene(){
         //Roda pela Scene de ponta a ponta, se ela existe.
-        let actualDuration = 4
+        let actualDuration = 5
         guard let parent = self.parent else {return}
         self.position.x = parent.frame.maxX + self.size.width
         let destination = CGPoint(x: 2*parent.frame.minX , y: platform.position.y + platform.size.height/2 + self.size.height/2 )
@@ -35,17 +36,19 @@ class Obstacle: SKSpriteNode{
     
     init(){
         
-        let texture = SKTexture(imageNamed: "obstaculo.png")
         
-        super.init(texture: texture, color: .clear, size: texture.size())
-        self.size = CGSize(width: 25, height: 25)
+        for i in stride(from:1, through: 2, by: 1){
+            let texture = SKTexture(imageNamed: "toco_\(i)")
+            tocoFrames.append(texture)
+        }
+        super.init(texture: tocoFrames[0], color: .clear, size: tocoFrames[0].size())
+        self.size = CGSize(width: 86.5, height: 71)
         self.physicsBody = SKPhysicsBody(rectangleOf: self.size)
         self.physicsBody?.isDynamic = false
         self.physicsBody?.categoryBitMask = PhysicsCategory.projectile
         self.physicsBody?.contactTestBitMask = PhysicsCategory.monster | PhysicsCategory.platformCategory
         self.physicsBody?.collisionBitMask =  PhysicsCategory.platformCategory
         self.physicsBody?.affectedByGravity = true
-        
         self.position = CGPoint(x: size.width + self.size.width/2, y:  platform.position.y + platform.size.height/2 + self.size.height/2)
         
     }

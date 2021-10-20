@@ -13,7 +13,7 @@ class Ground: SKSpriteNode {
     init (){
         
         super.init(texture: .none, color: .black, size: CGSize(width: 2000, height:15))
-        let position = CGPoint(x: frame.midX, y: -100)
+        let position = CGPoint(x: frame.midX, y: -110)
         self.position = position
         
         self.physicsBody =  SKPhysicsBody(rectangleOf: self.size)

@@ -11,7 +11,10 @@ import SpriteKit
 class FlyingObstacle: SKSpriteNode{
     
     private let platform: Ground = Ground()
+    var serraFrames: [SKTexture] = []
+    private var serra = SKSpriteNode()
     
+    static var actualDuration = 4.0
     
     func random() -> CGFloat {
         return CGFloat(Float(arc4random()) / 0xFFFFFFFF)
@@ -23,28 +26,31 @@ class FlyingObstacle: SKSpriteNode{
     
     func runOverScene(completion: @escaping ()->()){
         //Roda pela Scene de ponta a ponta, se ela existe.
-        let actualDuration = random(min: CGFloat(2.0), max: CGFloat(7.0))
         guard let parent = self.parent else {return}
         self.position.x = parent.frame.maxX + self.size.width
         let destination = CGPoint(x: 2*parent.frame.minX , y: platform.position.y + platform.size.height/2 + self.size.height/2 + 60 )
-        let runAction = SKAction.move(to: destination, duration: TimeInterval(actualDuration))
+        let runAction = SKAction.move(to: destination, duration: TimeInterval(Self.actualDuration))
         run(runAction, completion: completion)
+        if Self.actualDuration > 0.5{
+            Self.actualDuration *= 0.9
+        }
     }
     
     
     init(){
         
-        let texture = SKTexture(imageNamed: "motoserra")
-        
-        super.init(texture: texture, color: .clear, size: texture.size())
-        self.size = CGSize(width: 35, height: 35)
+        for i in stride(from:1, through: 3, by: 1){
+            let texture = SKTexture(imageNamed: "serra_\(i)")
+            serraFrames.append(texture)
+        }
+        super.init(texture: serraFrames[0], color: .clear, size: serraFrames[0].size())
+        self.size = CGSize(width: 70, height: 55)
         self.physicsBody = SKPhysicsBody(rectangleOf: self.size)
         self.physicsBody?.isDynamic = false
         self.physicsBody?.categoryBitMask = PhysicsCategory.projectile
         self.physicsBody?.contactTestBitMask = PhysicsCategory.monster | PhysicsCategory.platformCategory
         self.physicsBody?.collisionBitMask =  PhysicsCategory.platformCategory
         self.physicsBody?.affectedByGravity = true
-        
         self.position = CGPoint(x:size.width + self.size.width/2, y:  platform.position.y + 60 +  random(min: CGFloat(5), max: CGFloat(20.0)))
         
     }

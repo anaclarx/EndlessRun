@@ -19,6 +19,7 @@
 		0A2CA96726E0065F0025291B /* EndlessRunUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2CA96626E0065F0025291B /* EndlessRunUITests.swift */; };
 		0A2CA97526EA785B0025291B /* GameMenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2CA97426EA785B0025291B /* GameMenuScene.swift */; };
 		0A2CA97726EA786E0025291B /* GameMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2CA97626EA786E0025291B /* GameMenuViewController.swift */; };
+		0A4798A9270CC00A003CB0C0 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A4798A8270CC00A003CB0C0 /* Launch Screen.storyboard */; };
 		0A5C5F7D26F3AEB100171D67 /* GameStateScenen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5C5F7C26F3AEB100171D67 /* GameStateScenen.swift */; };
 		0A5C5F7F26F4F6EB00171D67 /* Obstacle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5C5F7E26F4F6EB00171D67 /* Obstacle.swift */; };
 		0A5C5F8126F4F8A500171D67 /* PhysicsCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5C5F8026F4F8A500171D67 /* PhysicsCategory.swift */; };
@@ -62,6 +63,7 @@
 		0A2CA96826E0065F0025291B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0A2CA97426EA785B0025291B /* GameMenuScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameMenuScene.swift; sourceTree = "<group>"; };
 		0A2CA97626EA786E0025291B /* GameMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameMenuViewController.swift; sourceTree = "<group>"; };
+		0A4798A8270CC00A003CB0C0 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		0A5C5F7C26F3AEB100171D67 /* GameStateScenen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStateScenen.swift; sourceTree = "<group>"; };
 		0A5C5F7E26F4F6EB00171D67 /* Obstacle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Obstacle.swift; sourceTree = "<group>"; };
 		0A5C5F8026F4F8A500171D67 /* PhysicsCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicsCategory.swift; sourceTree = "<group>"; };
@@ -117,13 +119,14 @@
 		0A2CA94226E0065E0025291B /* EndlessRun */ = {
 			isa = PBXGroup;
 			children = (
-				0A2CA94326E0065E0025291B /* AppDelegate.swift */,
 				0A2CA94526E0065E0025291B /* GameScene.sks */,
 				0A2CA94726E0065E0025291B /* Actions.sks */,
+				0A4798A8270CC00A003CB0C0 /* Launch Screen.storyboard */,
 				0A5C5F7B26F3AE8400171D67 /* Controller */,
 				0A5C5F7A26F3AE7A00171D67 /* Scene */,
 				0A5C5F7926F3AE6F00171D67 /* Model */,
 				0A2CA94D26E0065E0025291B /* Main.storyboard */,
+				0A2CA94326E0065E0025291B /* AppDelegate.swift */,
 				0A2CA95026E0065F0025291B /* Assets.xcassets */,
 				0A2CA95226E0065F0025291B /* Info.plist */,
 			);
@@ -285,6 +288,7 @@
 				0A2CA94F26E0065E0025291B /* Main.storyboard in Resources */,
 				0A2CA94626E0065E0025291B /* GameScene.sks in Resources */,
 				0A2CA95126E0065F0025291B /* Assets.xcassets in Resources */,
+				0A4798A9270CC00A003CB0C0 /* Launch Screen.storyboard in Resources */,
 				0A2CA94826E0065E0025291B /* Actions.sks in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

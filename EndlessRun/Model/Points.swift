@@ -23,7 +23,7 @@ class Points: SKSpriteNode{
     
     func runOverScene(completion: @escaping ()->()){
         //Roda pela Scene de ponta a ponta, se ela existe.
-        let actualDuration = random(min: CGFloat(3.0), max: CGFloat(12.0))
+        let actualDuration = 2
         guard let parent = self.parent else {return}
         self.position.x = parent.frame.maxX + self.size.width
         let destination = CGPoint(x: 2*parent.frame.minX , y: platform.position.y + 60 +  random(min: CGFloat(0), max: CGFloat(20.0)))
@@ -37,7 +37,7 @@ class Points: SKSpriteNode{
         let texture = SKTexture(imageNamed: "folha")
         
         super.init(texture: texture, color: .clear, size: texture.size())
-        self.size = CGSize(width: 25, height: 25)
+        self.size = CGSize(width: 45, height: 45)
         self.physicsBody = SKPhysicsBody(rectangleOf: self.size)
         self.physicsBody?.isDynamic = false
         self.physicsBody?.categoryBitMask = PhysicsCategory.point
