@@ -12,6 +12,8 @@ import GameplayKit
 class GameScene: SKScene {
     
     //MARK: Components
+    
+    
     private var player = SKSpriteNode()
     
     private var playerRunning: [SKTexture] = []
@@ -42,7 +44,9 @@ class GameScene: SKScene {
     
     var isPlayerDoubleJumping = false
     
-    var arrayObst:[FlyingObstacle] = []
+    var arrayFlyObst:[FlyingObstacle] = []
+    
+    var arrayObst:[Obstacle] = []
     
     var arrayPoints:[Points] = []
     
@@ -96,7 +100,13 @@ class GameScene: SKScene {
         }
         addChild(scoreLabel)
         setUpScenario()
+        createBackground()
     }
+    
+    override func update(_ currentTime: TimeInterval) {
+        moveGround()
+    }
+        
     
     func endGame(hitobstaculo: Bool){
         if isGameEnded{
@@ -105,11 +115,11 @@ class GameScene: SKScene {
         isGameEnded = true
         physicsWorld.speed = 0
         isUserInteractionEnabled = true
-        for obs in arrayObst {
-            obs.removeFromParent()
+        for flyobs in arrayFlyObst {
+            flyobs.removeFromParent()
         }
+        arrayFlyObst.removeAll()
         arrayObst.removeAll()
-        platform.removeFromParent()
         addChild(gameOver)
         addChild(tapLabel)
     }
@@ -119,14 +129,14 @@ class GameScene: SKScene {
             run(SKAction.repeatForever(
                 SKAction.sequence([
                     SKAction.run(addObstaculo),
-                    SKAction.wait(forDuration: random(min: 6, max: 12))
+                    SKAction.wait(forDuration: random(min: 3, max: 8))
                 ])
             ))
             //classe que cuida das actions e add obstaculo
             run(SKAction.repeatForever(
                 SKAction.sequence([
                     SKAction.run(addFlyingObstaculo),
-                    SKAction.wait(forDuration: random(min: 7, max: 12)),
+                    SKAction.wait(forDuration: random(min: 2, max: 7)),
                     SKAction.run(addPoint),
                     SKAction.wait(forDuration: random(min: 3, max: 5))
                 ])
@@ -143,8 +153,6 @@ class GameScene: SKScene {
         self.score = 0
         adjustScore(by: score)
         resetPlayer()
-        setUpScenario()
-        //alterar função:
         FlyingObstacle.actualDuration = 3.4
     }
     
@@ -172,6 +180,16 @@ extension GameScene: SKPhysicsContactDelegate {
             self.touchDown(atPoint: t.location(in: self)) }
     }
     
+    func touchDown(atPoint pos: CGPoint) {
+        if pos.x >= 0{
+            jump()
+        }
+        else{
+            attack()
+            animateAttack()
+            statePlayer = "attacking"
+        }
+    }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         
@@ -220,23 +238,12 @@ extension GameScene: SKPhysicsContactDelegate {
     
     
     func attack(){
-        if arrayObst.count == 0 {return}
+        if arrayFlyObst.count == 0 {return}
         else{
-            if(CGPointDistance(from: player.position, to: arrayObst[0].position) <= CGFloat(100)){
+            if(CGPointDistance(from: player.position, to: arrayFlyObst[0].position) <= CGFloat(200)){
                 removeObstArray()
             }
             else{return}
-        }
-    }
-    
-    func touchDown(atPoint pos: CGPoint) {
-        if pos.x >= 0{
-            jump()
-        }
-        else{
-            attack()
-            animateAttack()
-            statePlayer = "attacking"
         }
     }
     
@@ -325,6 +332,7 @@ extension GameScene{
     func addObstaculo() {
         if isGameEnded{return}
         let obstaculo = Obstacle()
+        arrayObst.append(obstaculo)
         addChild(obstaculo)
         animateToco(obst: obstaculo)
         obstaculo.runOverScene()
@@ -333,25 +341,61 @@ extension GameScene{
     
     func playerCollideWithObstaculo(projectile: SKSpriteNode, monster: SKSpriteNode){
         monster.removeFromParent()
+        //projectile.removeAllActions()
+        projectile.removeFromParent()
         endGame(hitobstaculo: isGameEnded)
     }
     
     func removeObstArray(){
-        if arrayObst.count == 0 {return}
-        arrayObst[0].removeFromParent()
-        arrayObst[0].removeAllActions()
-        arrayObst.removeFirst()
+        arrayFlyObst[0].removeFromParent()
+        arrayFlyObst[0].removeAllActions()
+        arrayFlyObst.removeFirst()
+    }
+    
+    func removePointArray(){
+        if arrayPoints.count == 0 {return}
+        arrayPoints[0].removeFromParent()
+        arrayPoints[0].removeAllActions()
+        arrayPoints.removeFirst()
     }
     
     func addFlyingObstaculo() {
         
         if isGameEnded{return}
         let flyobstaculo = FlyingObstacle()
-        arrayObst.append(flyobstaculo)
+        arrayFlyObst.append(flyobstaculo)
         addChild(flyobstaculo)
         animateSerra(serra: flyobstaculo)
         flyobstaculo.runOverScene(completion: removeObstArray)
         
+    }
+    
+    func animateToco(obst: Obstacle){
+        obst.run(SKAction.repeatForever(SKAction.animate(with: obstaculo.tocoFrames,timePerFrame: 0.4,resize: false,restore: true)), withKey: "animateToco")
+    }
+    
+    func animateSerra(serra: FlyingObstacle){
+        serra.run(SKAction.repeatForever(SKAction.animate(with: flyingobstaculo.serraFrames,timePerFrame: 0.4,resize: false,restore: true)), withKey: "animateToco")
+    }
+    
+    func createBackground(){
+        for i in 0...5{
+            let ground = SKSpriteNode(imageNamed: "background")
+            ground.name = "BackGround"
+            ground.size = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+            ground.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+            ground.position = CGPoint(x: CGFloat(i) * ground.size.width, y: UIScreen.main.bounds.minX)
+            ground.zPosition = -1
+            self.addChild(ground)
+        }
+    }
+    
+    func moveGround(){
+        self.enumerateChildNodes(withName: "BackGround", using: ({(node, error) in node.position.x -= 5
+            if node.position.x < -(UIScreen.main.bounds.width){
+                node.position.x += UIScreen.main.bounds.width * 3
+            }
+        }))
     }
     
 }
@@ -366,7 +410,7 @@ extension GameScene{
         let point = Points()
         arrayPoints.append(point)
         addChild(point)
-        point.runOverScene(completion: removeObstArray)
+        point.runOverScene(completion: removePointArray)
         
     }
     
@@ -376,7 +420,7 @@ extension GameScene{
         
     }
     func playerCollideWithPoint(point: SKSpriteNode, monster: SKSpriteNode) {
-        point.removeFromParent()
+        removePointArray()
         adjustScore(by: 1)
         
     }
@@ -440,13 +484,7 @@ extension GameScene{
                    withKey:"jumpingInPlace")
     }
     
-    func animateToco(obst: Obstacle){
-        obst.run(SKAction.repeatForever(SKAction.animate(with: obstaculo.tocoFrames,timePerFrame: 0.4,resize: false,restore: true)), withKey: "animateToco")
-    }
     
-    func animateSerra(serra: FlyingObstacle){
-        serra.run(SKAction.repeatForever(SKAction.animate(with: flyingobstaculo.serraFrames,timePerFrame: 0.4,resize: false,restore: true)), withKey: "animateToco")
-    }
 }
 
 //MARK: Secondary Functions:

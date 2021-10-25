@@ -24,7 +24,7 @@ class Obstacle: SKSpriteNode{
     
     func runOverScene(){
         //Roda pela Scene de ponta a ponta, se ela existe.
-        let actualDuration = 5
+        let actualDuration = 3
         guard let parent = self.parent else {return}
         self.position.x = parent.frame.maxX + self.size.width
         let destination = CGPoint(x: 2*parent.frame.minX , y: platform.position.y + platform.size.height/2 + self.size.height/2 )
@@ -42,7 +42,7 @@ class Obstacle: SKSpriteNode{
             tocoFrames.append(texture)
         }
         super.init(texture: tocoFrames[0], color: .clear, size: tocoFrames[0].size())
-        self.size = CGSize(width: 86.5, height: 71)
+        self.size = CGSize(width: 170, height: 140)
         self.physicsBody = SKPhysicsBody(rectangleOf: self.size)
         self.physicsBody?.isDynamic = false
         self.physicsBody?.categoryBitMask = PhysicsCategory.projectile
