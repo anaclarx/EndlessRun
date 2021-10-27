@@ -42,6 +42,8 @@ class GameScene: SKScene {
     
     var score = 0
     
+    var highestScore = UserDefaults.standard.integer(forKey: "highScore")
+    
     var isPlayerDoubleJumping = false
     
     var arrayFlyObst:[FlyingObstacle] = []
@@ -55,7 +57,7 @@ class GameScene: SKScene {
     lazy var scoreLabel: SKLabelNode = {
         var label = SKLabelNode(fontNamed: "Arial-BoldMT")
         label.fontSize = 20
-        label.fontColor = SKColor.black
+        label.fontColor = SKColor.white
         label.position = CGPoint(x:  -190, y: 120 )
         label.text = "Points: 0"
         return label
@@ -106,11 +108,15 @@ class GameScene: SKScene {
     override func update(_ currentTime: TimeInterval) {
         moveGround()
     }
-        
+    
     
     func endGame(hitobstaculo: Bool){
         if isGameEnded{
             return
+        }
+        if(score > highestScore){
+            highestScore = score
+            UserDefaults.standard.set(score, forKey: "highScore")
         }
         isGameEnded = true
         physicsWorld.speed = 0
@@ -391,7 +397,7 @@ extension GameScene{
     }
     
     func moveGround(){
-        self.enumerateChildNodes(withName: "BackGround", using: ({(node, error) in node.position.x -= 5
+        self.enumerateChildNodes(withName: "BackGround", using: ({(node, error) in node.position.x -= 7
             if node.position.x < -(UIScreen.main.bounds.width){
                 node.position.x += UIScreen.main.bounds.width * 3
             }
@@ -409,6 +415,7 @@ extension GameScene{
         if isGameEnded{return}
         let point = Points()
         arrayPoints.append(point)
+        animatePoints(point: point)
         addChild(point)
         point.runOverScene(completion: removePointArray)
         
@@ -425,6 +432,9 @@ extension GameScene{
         
     }
     
+    func animatePoints(point: Points){
+        point.run(SKAction.repeatForever(SKAction.animate(with: point.pointsFrames,timePerFrame: 0.2,resize: false,restore: true)), withKey: "animateToco")
+    }
 }
 
 //MARK: Player
@@ -486,6 +496,7 @@ extension GameScene{
     
     
 }
+
 
 //MARK: Secondary Functions:
 

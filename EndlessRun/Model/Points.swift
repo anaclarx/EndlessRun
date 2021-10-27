@@ -11,7 +11,8 @@ import SpriteKit
 class Points: SKSpriteNode{
 
     private let platform: Ground = Ground()
-    
+    var pointsFrames: [SKTexture] = []
+    private var point = SKSpriteNode()
     
     func random() -> CGFloat {
         return CGFloat(Float(arc4random()) / 0xFFFFFFFF)
@@ -23,7 +24,7 @@ class Points: SKSpriteNode{
     
     func runOverScene(completion: @escaping ()->()){
         //Roda pela Scene de ponta a ponta, se ela existe.
-        let actualDuration = 2
+        let actualDuration = 3
         guard let parent = self.parent else {return}
         self.position.x = parent.frame.maxX + self.size.width
         let destination = CGPoint(x: 2*parent.frame.minX , y: platform.position.y + 60 +  random(min: CGFloat(0), max: CGFloat(20.0)))
@@ -34,9 +35,11 @@ class Points: SKSpriteNode{
     
     init(){
         
-        let texture = SKTexture(imageNamed: "folha")
-        
-        super.init(texture: texture, color: .clear, size: texture.size())
+        for i in stride(from:1, through: 5, by: 1){
+            let texture = SKTexture(imageNamed: "capsula_\(i)")
+            pointsFrames.append(texture)
+        }
+        super.init(texture: pointsFrames[0], color: .clear, size: pointsFrames[0].size())
         self.size = CGSize(width: 45, height: 45)
         self.physicsBody = SKPhysicsBody(rectangleOf: self.size)
         self.physicsBody?.isDynamic = false

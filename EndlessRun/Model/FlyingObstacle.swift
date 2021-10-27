@@ -14,7 +14,7 @@ class FlyingObstacle: SKSpriteNode{
     var serraFrames: [SKTexture] = []
     private var serra = SKSpriteNode()
     
-    static var actualDuration = 4.0
+    static var actualDuration = 3.5
     
     func random() -> CGFloat {
         return CGFloat(Float(arc4random()) / 0xFFFFFFFF)

@@ -24,10 +24,10 @@ class Obstacle: SKSpriteNode{
     
     func runOverScene(){
         //Roda pela Scene de ponta a ponta, se ela existe.
-        let actualDuration = 3
+        let actualDuration = 4
         guard let parent = self.parent else {return}
         self.position.x = parent.frame.maxX + self.size.width
-        let destination = CGPoint(x: 2*parent.frame.minX , y: platform.position.y + platform.size.height/2 + self.size.height/2 )
+        let destination = CGPoint(x: 2*parent.frame.minX , y: platform.position.y + platform.size.height/2 + self.size.height/2 - 10)
         let runAction = SKAction.move(to: destination, duration: TimeInterval(actualDuration))
         let deleteAction = SKAction.removeFromParent()
         run(SKAction.repeatForever(SKAction.sequence([runAction, deleteAction])))
@@ -42,14 +42,14 @@ class Obstacle: SKSpriteNode{
             tocoFrames.append(texture)
         }
         super.init(texture: tocoFrames[0], color: .clear, size: tocoFrames[0].size())
-        self.size = CGSize(width: 170, height: 140)
+        self.size = CGSize(width: 140, height: 110)
         self.physicsBody = SKPhysicsBody(rectangleOf: self.size)
         self.physicsBody?.isDynamic = false
         self.physicsBody?.categoryBitMask = PhysicsCategory.projectile
         self.physicsBody?.contactTestBitMask = PhysicsCategory.monster | PhysicsCategory.platformCategory
         self.physicsBody?.collisionBitMask =  PhysicsCategory.platformCategory
         self.physicsBody?.affectedByGravity = true
-        self.position = CGPoint(x: size.width + self.size.width/2, y:  platform.position.y + platform.size.height/2 + self.size.height/2)
+        self.position = CGPoint(x: size.width + self.size.width/2, y:  platform.position.y + platform.size.height/2 + self.size.height/2 - 10)
         
     }
     
