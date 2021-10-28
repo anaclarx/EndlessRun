@@ -356,6 +356,7 @@ extension GameScene{
         arrayFlyObst[0].removeFromParent()
         arrayFlyObst[0].removeAllActions()
         arrayFlyObst.removeFirst()
+        adjustScore(by: 1)
     }
     
     func removePointArray(){
@@ -457,13 +458,15 @@ extension GameScene{
         playerRunning = runningFrames
         let firstTexture = playerRunning[0]
         player = SKSpriteNode(texture: firstTexture)
-        player.position = CGPoint(x: -140, y: platform.position.y + platform.size.height)
+        player.position = CGPoint(x: -250, y: platform.position.y + platform.size.height)
         player.size = CGSize(width: 103, height: 80)
         player.physicsBody = SKPhysicsBody(rectangleOf: player.size)
         player.physicsBody?.isDynamic = true
         player.physicsBody?.categoryBitMask = PhysicsCategory.monster
         player.physicsBody?.contactTestBitMask = PhysicsCategory.projectile | PhysicsCategory.platformCategory
         player.physicsBody?.collisionBitMask =  PhysicsCategory.platformCategory
+        player.physicsBody?.allowsRotation = false
+        //player.constraints = [SKConstraint.zRotation(SKRange(lowerLimit:0 upperLimit:0))]
         addChild(player)
     }
     

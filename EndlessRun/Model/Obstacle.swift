@@ -24,10 +24,10 @@ class Obstacle: SKSpriteNode{
     
     func runOverScene(){
         //Roda pela Scene de ponta a ponta, se ela existe.
-        let actualDuration = 4
+        let actualDuration = 3.5
         guard let parent = self.parent else {return}
         self.position.x = parent.frame.maxX + self.size.width
-        let destination = CGPoint(x: 2*parent.frame.minX , y: platform.position.y + platform.size.height/2 + self.size.height/2 - 10)
+        let destination = CGPoint(x: 2*parent.frame.minX , y: platform.position.y + platform.size.height/2 + self.size.height/2 - 20)
         let runAction = SKAction.move(to: destination, duration: TimeInterval(actualDuration))
         let deleteAction = SKAction.removeFromParent()
         run(SKAction.repeatForever(SKAction.sequence([runAction, deleteAction])))
@@ -49,7 +49,7 @@ class Obstacle: SKSpriteNode{
         self.physicsBody?.contactTestBitMask = PhysicsCategory.monster | PhysicsCategory.platformCategory
         self.physicsBody?.collisionBitMask =  PhysicsCategory.platformCategory
         self.physicsBody?.affectedByGravity = true
-        self.position = CGPoint(x: size.width + self.size.width/2, y:  platform.position.y + platform.size.height/2 + self.size.height/2 - 10)
+        self.position = CGPoint(x: size.width + self.size.width/2, y:  platform.position.y + platform.size.height/2 + self.size.height/2 - 20)
         
     }
     
