@@ -14,7 +14,7 @@ class FlyingObstacle: SKSpriteNode{
     var serraFrames: [SKTexture] = []
     private var serra = SKSpriteNode()
     
-    static var actualDuration = 3.5
+    static var actualDuration = 3.0
     
     func random() -> CGFloat {
         return CGFloat(Float(arc4random()) / 0xFFFFFFFF)
@@ -31,8 +31,8 @@ class FlyingObstacle: SKSpriteNode{
         let destination = CGPoint(x: 2*parent.frame.minX , y: platform.position.y + platform.size.height/2 + self.size.height/2 + 60 )
         let runAction = SKAction.move(to: destination, duration: TimeInterval(Self.actualDuration))
         run(runAction, completion: completion)
-        if Self.actualDuration > 0.5{
-            Self.actualDuration *= 0.9
+        if Self.actualDuration > 0{
+            Self.actualDuration *= 0.85
         }
     }
     
@@ -44,7 +44,7 @@ class FlyingObstacle: SKSpriteNode{
             serraFrames.append(texture)
         }
         super.init(texture: serraFrames[0], color: .clear, size: serraFrames[0].size())
-        self.size = CGSize(width: 70, height: 55)
+        self.size = CGSize(width: 80, height: 65)
         self.physicsBody = SKPhysicsBody(rectangleOf: self.size)
         self.physicsBody?.isDynamic = false
         self.physicsBody?.categoryBitMask = PhysicsCategory.projectile

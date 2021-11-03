@@ -24,6 +24,8 @@ class GameScene: SKScene {
     
     var statePlayer = "running"
     
+    var velocityBackground = 7.0
+    
     //let playerAction: SKAction
     
     private let platform: Ground = Ground()
@@ -103,10 +105,25 @@ class GameScene: SKScene {
         addChild(scoreLabel)
         setUpScenario()
         createBackground()
+        createRectangle()
     }
     
     override func update(_ currentTime: TimeInterval) {
-        moveGround()
+        moveGround(velocity: velocityBackground)
+    }
+    
+    func createRectangle(){
+        let rectangle = SKSpriteNode()
+        rectangle.size = UIScreen.main.bounds.size
+        rectangle.color = .black
+        rectangle.alpha = 0.5
+        rectangle.zPosition = 1
+        if(isGameEnded == true){
+            self.addChild(rectangle)
+        }
+        else{
+            rectangle.removeFromParent()
+        }
     }
     
     
@@ -126,6 +143,7 @@ class GameScene: SKScene {
         }
         arrayFlyObst.removeAll()
         arrayObst.removeAll()
+        velocityBackground = 0
         addChild(gameOver)
         addChild(tapLabel)
     }
@@ -159,6 +177,7 @@ class GameScene: SKScene {
         self.score = 0
         adjustScore(by: score)
         resetPlayer()
+        velocityBackground = 7
         FlyingObstacle.actualDuration = 3.4
     }
     
@@ -187,8 +206,13 @@ extension GameScene: SKPhysicsContactDelegate {
     }
     
     func touchDown(atPoint pos: CGPoint) {
-        if pos.x >= 0{
-            jump()
+        if pos.x >= 0 {
+            if(pos.y > -140){
+                jump()
+            }
+            if (pos.y <= -140 && isCharacterOnGround == false) {
+              goToGround()
+            }
         }
         else{
             attack()
@@ -209,7 +233,7 @@ extension GameScene: SKPhysicsContactDelegate {
         if(self.isCharacterOnGround){
             player.texture = SKTexture(imageNamed: "pulo_1")
             animateJump()
-            player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 240))
+            player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 150))
             isJumping = true
             self.isCharacterOnGround = false
             return
@@ -217,12 +241,12 @@ extension GameScene: SKPhysicsContactDelegate {
         
         if(isJumping == true && isPlayerDoubleJumping == false && isCharacterOnGround == false){
             if(player.position.y > platform.position.y + platform.size.height*1.2){
-                jumpImpulse(impulso: 160)
+                jumpImpulse(impulso: 110)
                 animateJump()
                 return
             }
             else{
-                jumpImpulse(impulso: 160)
+                jumpImpulse(impulso: 110)
                 player.run((
                     SKAction.animate(with: [playerJumping[1], playerJumping[2], playerJumping[3]],
                                      timePerFrame: 0.25,
@@ -232,6 +256,14 @@ extension GameScene: SKPhysicsContactDelegate {
                 return
             }
         }
+    }
+    
+    func goToGround(){
+        let toGround = SKAction.moveTo(y: platform.position.y + platform.size.height, duration: 0.2)
+        player.texture = SKTexture(imageNamed: "correndo1")
+        player.run(toGround)
+        isJumping = false
+        isPlayerDoubleJumping = false
     }
     
     func jumpImpulse(impulso: CGFloat){
@@ -378,11 +410,11 @@ extension GameScene{
     }
     
     func animateToco(obst: Obstacle){
-        obst.run(SKAction.repeatForever(SKAction.animate(with: obstaculo.tocoFrames,timePerFrame: 0.4,resize: false,restore: true)), withKey: "animateToco")
+        obst.run(SKAction.repeatForever(SKAction.animate(with: obstaculo.tocoFrames,timePerFrame: 0.2,resize: false,restore: true)), withKey: "animateToco")
     }
     
     func animateSerra(serra: FlyingObstacle){
-        serra.run(SKAction.repeatForever(SKAction.animate(with: flyingobstaculo.serraFrames,timePerFrame: 0.4,resize: false,restore: true)), withKey: "animateToco")
+        serra.run(SKAction.repeatForever(SKAction.animate(with: flyingobstaculo.serraFrames,timePerFrame: 0.2,resize: false,restore: true)), withKey: "animateToco")
     }
     
     func createBackground(){
@@ -397,8 +429,8 @@ extension GameScene{
         }
     }
     
-    func moveGround(){
-        self.enumerateChildNodes(withName: "BackGround", using: ({(node, error) in node.position.x -= 7
+    func moveGround(velocity: CGFloat){
+        self.enumerateChildNodes(withName: "BackGround", using: ({(node, error) in node.position.x -= velocity
             if node.position.x < -(UIScreen.main.bounds.width){
                 node.position.x += UIScreen.main.bounds.width * 3
             }
@@ -434,7 +466,7 @@ extension GameScene{
     }
     
     func animatePoints(point: Points){
-        point.run(SKAction.repeatForever(SKAction.animate(with: point.pointsFrames,timePerFrame: 0.2,resize: false,restore: true)), withKey: "animateToco")
+        point.run(SKAction.repeatForever(SKAction.animate(with: point.pointsFrames,timePerFrame: 0.1,resize: false,restore: true)), withKey: "animateToco")
     }
 }
 
@@ -460,7 +492,7 @@ extension GameScene{
         player = SKSpriteNode(texture: firstTexture)
         player.position = CGPoint(x: -250, y: platform.position.y + platform.size.height)
         player.size = CGSize(width: 103, height: 80)
-        player.physicsBody = SKPhysicsBody(rectangleOf: player.size)
+        player.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: player.size.width - 20, height: player.size.height - 20))
         player.physicsBody?.isDynamic = true
         player.physicsBody?.categoryBitMask = PhysicsCategory.monster
         player.physicsBody?.contactTestBitMask = PhysicsCategory.projectile | PhysicsCategory.platformCategory
@@ -473,7 +505,7 @@ extension GameScene{
     func animateRunning() {
         player.run(SKAction.repeatForever(
             SKAction.animate(with: playerRunning,
-                             timePerFrame: 0.1,
+                             timePerFrame: 0.08,
                              resize: false,
                              restore: true)),
                    withKey:"runningInPlace")
