@@ -8,6 +8,8 @@
 import SpriteKit
 import UIKit
 import GameplayKit
+import AVKit
+import AVFoundation
 
 class GameScene: SKScene {
     
@@ -32,6 +34,15 @@ class GameScene: SKScene {
     
     private let obstaculo: Obstacle = Obstacle()
     
+    private let lama: Lama = Lama()
+    
+    private let nuvem: Nuvem = Nuvem()
+    
+    var music: SKAudioNode!
+    
+    var jumpSound: SKAudioNode!
+
+    
     private let flyingobstaculo: FlyingObstacle = FlyingObstacle()
     
     private let point: Points = Points()
@@ -53,6 +64,10 @@ class GameScene: SKScene {
     var arrayObst:[Obstacle] = []
     
     var arrayPoints:[Points] = []
+    
+    var arrayNuvem:[Nuvem] = []
+    
+    var arrayLama:[Lama] = []
     
     var isJumping = false
     
@@ -102,6 +117,11 @@ class GameScene: SKScene {
         if statePlayer == "attacking"{
             animateAttack()
         }
+        if let musicURL = Bundle.main.url(forResource: "musica", withExtension: "wav") {
+            music = SKAudioNode(url: musicURL)
+            addChild(music)
+        }
+        music.run(SKAction.changeVolume(to: Float(0.3), duration: 0))
         addChild(scoreLabel)
         setUpScenario()
         createBackground()
@@ -141,6 +161,8 @@ class GameScene: SKScene {
         for flyobs in arrayFlyObst {
             flyobs.removeFromParent()
         }
+        music.run(SKAction.stop())
+        music.removeFromParent()
         arrayFlyObst.removeAll()
         arrayObst.removeAll()
         velocityBackground = 0
@@ -153,7 +175,9 @@ class GameScene: SKScene {
             run(SKAction.repeatForever(
                 SKAction.sequence([
                     SKAction.run(addObstaculo),
-                    SKAction.wait(forDuration: random(min: 3, max: 8))
+                    SKAction.wait(forDuration: random(min: 3, max: 8)),
+                    SKAction.run(addLama),
+                    SKAction.wait(forDuration: random(min: 4, max: 9))
                 ])
             ))
             //classe que cuida das actions e add obstaculo
@@ -161,8 +185,9 @@ class GameScene: SKScene {
                 SKAction.sequence([
                     SKAction.run(addFlyingObstaculo),
                     SKAction.wait(forDuration: random(min: 2, max: 7)),
-                    SKAction.run(addPoint),
-                    SKAction.wait(forDuration: random(min: 3, max: 5))
+                    SKAction.run(addNuvem),
+                    SKAction.wait(forDuration:  random(min: 3, max: 8)),
+                    SKAction.run(addPoint)
                 ])
             ))
         }
@@ -179,6 +204,11 @@ class GameScene: SKScene {
         resetPlayer()
         velocityBackground = 7
         FlyingObstacle.actualDuration = 3.4
+        if let musicURL = Bundle.main.url(forResource: "musica", withExtension: "wav") {
+            music = SKAudioNode(url: musicURL)
+            addChild(music)
+        }
+        music.run(SKAction.changeVolume(to: Float(0.3), duration: 0))
     }
     
     func resetPlayer(){
@@ -217,6 +247,7 @@ extension GameScene: SKPhysicsContactDelegate {
         else{
             attack()
             animateAttack()
+            player.run(SKAction.playSoundFileNamed("attack.wav", waitForCompletion: false))
             statePlayer = "attacking"
         }
     }
@@ -236,6 +267,7 @@ extension GameScene: SKPhysicsContactDelegate {
             player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 150))
             isJumping = true
             self.isCharacterOnGround = false
+            player.run(SKAction.playSoundFileNamed("jump.wav", waitForCompletion: false))
             return
         }
         
@@ -243,6 +275,7 @@ extension GameScene: SKPhysicsContactDelegate {
             if(player.position.y > platform.position.y + platform.size.height*1.2){
                 jumpImpulse(impulso: 110)
                 animateJump()
+                player.run(SKAction.playSoundFileNamed("jump.wav", waitForCompletion: false))
                 return
             }
             else{
@@ -253,6 +286,7 @@ extension GameScene: SKPhysicsContactDelegate {
                                      resize: false,
                                      restore: true)),
                            withKey:"jumpingInPlace")
+                player.run(SKAction.playSoundFileNamed("jump.wav", waitForCompletion: false))
                 return
             }
         }
@@ -280,6 +314,7 @@ extension GameScene: SKPhysicsContactDelegate {
         else{
             if(CGPointDistance(from: player.position, to: arrayFlyObst[0].position) <= CGFloat(200)){
                 removeObstArray()
+                adjustScore(by: 1)
             }
             else{return}
         }
@@ -306,6 +341,7 @@ extension GameScene: SKPhysicsContactDelegate {
         
         if((firstBody.categoryBitMask & PhysicsCategory.monster != 0) && (secondBody.categoryBitMask & PhysicsCategory.projectile != 0 )){
             if let monster = firstBody.node as? SKSpriteNode, let projectile = secondBody.node as? SKSpriteNode{
+                player.run(SKAction.playSoundFileNamed("die.wav", waitForCompletion: false))
                 playerCollideWithObstaculo(projectile: projectile, monster: monster)
             }
         }
@@ -313,6 +349,7 @@ extension GameScene: SKPhysicsContactDelegate {
         if((firstBody.categoryBitMask & PhysicsCategory.monster != 0) && (secondBody.categoryBitMask & PhysicsCategory.point != 0 )){
             if let monster = firstBody.node as? SKSpriteNode, let point = secondBody.node as? SKSpriteNode{
                 playerCollideWithPoint(point: point , monster: monster)
+                player.run(SKAction.playSoundFileNamed("point.wav", waitForCompletion: false))
             }
         }
         
@@ -377,10 +414,21 @@ extension GameScene{
         
     }
     
+    func addLama(){
+        if isGameEnded{return}
+        let lama = Lama()
+        arrayLama.append(lama)
+        addChild(lama)
+        animateLama(lamaChao: lama)
+        lama.runOverScene()
+        
+    }
+    
     func playerCollideWithObstaculo(projectile: SKSpriteNode, monster: SKSpriteNode){
         monster.removeFromParent()
         //projectile.removeAllActions()
         projectile.removeFromParent()
+        player.run(SKAction.playSoundFileNamed("die.wav", waitForCompletion: false))
         endGame(hitobstaculo: isGameEnded)
     }
     
@@ -388,7 +436,6 @@ extension GameScene{
         arrayFlyObst[0].removeFromParent()
         arrayFlyObst[0].removeAllActions()
         arrayFlyObst.removeFirst()
-        adjustScore(by: 1)
     }
     
     func removePointArray(){
@@ -409,13 +456,34 @@ extension GameScene{
         
     }
     
+    func addNuvem(){
+        if isGameEnded{return}
+        let nuvem = Nuvem()
+        arrayNuvem.append(nuvem)
+        addChild(nuvem)
+        animateNuvem(nuvemCeu: nuvem)
+        nuvem.runOverScene()
+    }
+    
     func animateToco(obst: Obstacle){
         obst.run(SKAction.repeatForever(SKAction.animate(with: obstaculo.tocoFrames,timePerFrame: 0.2,resize: false,restore: true)), withKey: "animateToco")
     }
     
     func animateSerra(serra: FlyingObstacle){
-        serra.run(SKAction.repeatForever(SKAction.animate(with: flyingobstaculo.serraFrames,timePerFrame: 0.2,resize: false,restore: true)), withKey: "animateToco")
+        serra.run(SKAction.repeatForever(SKAction.animate(with: flyingobstaculo.serraFrames,timePerFrame: 0.2,resize: false,restore: true)), withKey: "animateSerra")
     }
+    
+    func animateLama(lamaChao: Lama){
+        lamaChao.run(SKAction.repeatForever(SKAction.animate(with: lama.lamaFrames ,timePerFrame: 0.2,resize: false,restore: true)), withKey: "animateLama")
+    }
+    
+    func animateNuvem(nuvemCeu: Nuvem){
+        nuvemCeu.run(SKAction.repeatForever(SKAction.animate(with: nuvem.nuvemFrames,timePerFrame: 0.2,resize: false,restore: true)), withKey: "animateSerra")
+    }
+    
+    
+    
+//MARK: Background
     
     func createBackground(){
         for i in 0...5{

@@ -13,8 +13,9 @@ class FlyingObstacle: SKSpriteNode{
     private let platform: Ground = Ground()
     var serraFrames: [SKTexture] = []
     private var serra = SKSpriteNode()
+    var actualY: CGFloat = 0
     
-    static var actualDuration = 3.0
+    static var actualDuration = 2.5
     
     func random() -> CGFloat {
         return CGFloat(Float(arc4random()) / 0xFFFFFFFF)
@@ -26,9 +27,10 @@ class FlyingObstacle: SKSpriteNode{
     
     func runOverScene(completion: @escaping ()->()){
         //Roda pela Scene de ponta a ponta, se ela existe.
+        actualY = platform.position.y + 60 +  random(min: CGFloat(0), max: CGFloat(240.0))
         guard let parent = self.parent else {return}
         self.position.x = parent.frame.maxX + self.size.width
-        let destination = CGPoint(x: 2*parent.frame.minX , y: platform.position.y + platform.size.height/2 + self.size.height/2 + 60 )
+        let destination = CGPoint(x: 2*parent.frame.minX , y: actualY)
         let runAction = SKAction.move(to: destination, duration: TimeInterval(Self.actualDuration))
         run(runAction, completion: completion)
         if Self.actualDuration > 0{
@@ -38,7 +40,6 @@ class FlyingObstacle: SKSpriteNode{
     
     
     init(){
-        
         for i in stride(from:1, through: 3, by: 1){
             let texture = SKTexture(imageNamed: "serra_\(i)")
             serraFrames.append(texture)
@@ -51,7 +52,7 @@ class FlyingObstacle: SKSpriteNode{
         self.physicsBody?.contactTestBitMask = PhysicsCategory.monster | PhysicsCategory.platformCategory
         self.physicsBody?.collisionBitMask =  PhysicsCategory.platformCategory
         self.physicsBody?.affectedByGravity = true
-        self.position = CGPoint(x:size.width + self.size.width/2, y:  platform.position.y + 60 +  random(min: CGFloat(5), max: CGFloat(20.0)))
+        self.position = CGPoint(x:size.width + self.size.width/2, y:  actualY)
         
     }
     

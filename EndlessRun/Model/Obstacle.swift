@@ -24,7 +24,7 @@ class Obstacle: SKSpriteNode{
     
     func runOverScene(){
         //Roda pela Scene de ponta a ponta, se ela existe.
-        let actualDuration = 3.5
+        let actualDuration = 3.25
         guard let parent = self.parent else {return}
         self.position.x = parent.frame.maxX + self.size.width
         let destination = CGPoint(x: 2*parent.frame.minX , y: platform.position.y + platform.size.height/2 + self.size.height/2 - 20)
