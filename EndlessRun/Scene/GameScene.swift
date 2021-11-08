@@ -38,6 +38,8 @@ class GameScene: SKScene {
     
     private let nuvem: Nuvem = Nuvem()
     
+    private let vaca: Vaca = Vaca()
+    
     var music: SKAudioNode!
     
     var jumpSound: SKAudioNode!
@@ -177,21 +179,21 @@ class GameScene: SKScene {
                     SKAction.run(addObstaculo),
                     SKAction.wait(forDuration: random(min: 3, max: 8)),
                     SKAction.run(addLama),
-                    SKAction.wait(forDuration: random(min: 4, max: 9))
+                    SKAction.wait(forDuration: random(min: 4, max: 9)),
+                    SKAction.run(addVaca),
+                    SKAction.wait(forDuration: random(min: 5, max: 10)),
+                    SKAction.run(addNuvem),
+                    SKAction.wait(forDuration:  random(min: 3, max: 8))
                 ])
             ))
-            //classe que cuida das actions e add obstaculo
             run(SKAction.repeatForever(
                 SKAction.sequence([
                     SKAction.run(addFlyingObstaculo),
                     SKAction.wait(forDuration: random(min: 2, max: 7)),
-                    SKAction.run(addNuvem),
-                    SKAction.wait(forDuration:  random(min: 3, max: 8)),
                     SKAction.run(addPoint)
                 ])
             ))
         }
-        
     }
     
     func reset(){
@@ -465,6 +467,14 @@ extension GameScene{
         nuvem.runOverScene()
     }
     
+    func addVaca(){
+        if isGameEnded{return}
+        let vaca = Vaca()
+        addChild(vaca)
+        animateVaca(cow: vaca)
+        vaca.runOverScene()
+    }
+    
     func animateToco(obst: Obstacle){
         obst.run(SKAction.repeatForever(SKAction.animate(with: obstaculo.tocoFrames,timePerFrame: 0.2,resize: false,restore: true)), withKey: "animateToco")
     }
@@ -478,9 +488,12 @@ extension GameScene{
     }
     
     func animateNuvem(nuvemCeu: Nuvem){
-        nuvemCeu.run(SKAction.repeatForever(SKAction.animate(with: nuvem.nuvemFrames,timePerFrame: 0.2,resize: false,restore: true)), withKey: "animateSerra")
+        nuvemCeu.run(SKAction.repeatForever(SKAction.animate(with: nuvem.nuvemFrames,timePerFrame: 0.2,resize: false,restore: true)), withKey: "animateNuvem")
     }
     
+    func animateVaca(cow: Vaca){
+        vaca.run(SKAction.repeatForever(SKAction.animate(with: vaca.vacaFrames,timePerFrame: 0.2,resize: false,restore: true)), withKey: "animateVaca")
+    }
     
     
 //MARK: Background

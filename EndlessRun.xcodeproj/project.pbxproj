@@ -24,6 +24,7 @@
 		0A5C5F7F26F4F6EB00171D67 /* Obstacle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5C5F7E26F4F6EB00171D67 /* Obstacle.swift */; };
 		0A5C5F8126F4F8A500171D67 /* PhysicsCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5C5F8026F4F8A500171D67 /* PhysicsCategory.swift */; };
 		0A5C5F8326F4FA0200171D67 /* Ground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5C5F8226F4FA0200171D67 /* Ground.swift */; };
+		0A8769FC2735A56D0092C85F /* Vaca.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8769FB2735A56D0092C85F /* Vaca.swift */; };
 		0ABD61BF26FCEBE70008BC77 /* FlyingObstacle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABD61BE26FCEBE70008BC77 /* FlyingObstacle.swift */; };
 		0ACA7CF327346B56008FBFCC /* Lama.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ACA7CF227346B56008FBFCC /* Lama.swift */; };
 		0ACA7CF5273476A8008FBFCC /* Nuvem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ACA7CF4273476A8008FBFCC /* Nuvem.swift */; };
@@ -78,6 +79,7 @@
 		0A5C5F7E26F4F6EB00171D67 /* Obstacle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Obstacle.swift; sourceTree = "<group>"; };
 		0A5C5F8026F4F8A500171D67 /* PhysicsCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicsCategory.swift; sourceTree = "<group>"; };
 		0A5C5F8226F4FA0200171D67 /* Ground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ground.swift; sourceTree = "<group>"; };
+		0A8769FB2735A56D0092C85F /* Vaca.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vaca.swift; sourceTree = "<group>"; };
 		0ABD61BE26FCEBE70008BC77 /* FlyingObstacle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlyingObstacle.swift; sourceTree = "<group>"; };
 		0ACA7CF227346B56008FBFCC /* Lama.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lama.swift; sourceTree = "<group>"; };
 		0ACA7CF4273476A8008FBFCC /* Nuvem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Nuvem.swift; sourceTree = "<group>"; };
@@ -184,6 +186,7 @@
 				0AE72CB927234CAE0053BC54 /* HighScore.swift */,
 				0ACA7CF227346B56008FBFCC /* Lama.swift */,
 				0ACA7CF4273476A8008FBFCC /* Nuvem.swift */,
+				0A8769FB2735A56D0092C85F /* Vaca.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -350,6 +353,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A8769FC2735A56D0092C85F /* Vaca.swift in Sources */,
 				0A5C5F7F26F4F6EB00171D67 /* Obstacle.swift in Sources */,
 				0ABD61BF26FCEBE70008BC77 /* FlyingObstacle.swift in Sources */,
 				0A5C5F8126F4F8A500171D67 /* PhysicsCategory.swift in Sources */,
@@ -540,7 +544,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "br.puc-rio.inf.les.developeracademy.ignis";
+				PRODUCT_BUNDLE_IDENTIFIER = "br.puc-rio.inf.les.developeracademy";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -560,7 +564,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "br.puc-rio.inf.les.developeracademy.ignis";
+				PRODUCT_BUNDLE_IDENTIFIER = "br.puc-rio.inf.les.developeracademy";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
