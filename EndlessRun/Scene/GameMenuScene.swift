@@ -12,47 +12,42 @@ import SpriteKit
 class GameMenuScene: SKScene,SKPhysicsContactDelegate
 {
     
-    var playButton = SKSpriteNode()
-    let playButtonTex = SKTexture(imageNamed: "play")
-    lazy var highScoreLabel: SKLabelNode = {
-        var label = SKLabelNode(fontNamed: "Arial-BoldMT")
-        label.fontSize = 20
-        label.fontColor = SKColor.black
-        label.position = CGPoint(x:  -260, y: 140 )
-        label.text = "Points: 0"
-        return label
-    }()
+    var playButton = SKSpriteNode() //lettering inteiro funciona como playButton
+    var background: SKSpriteNode = SKSpriteNode()
+    var comoJogarButton = SKSpriteNode()
+    var universoExpandidoButton = SKSpriteNode()
+    var ajustesButton = SKSpriteNode() //ainda nao foi implementado
     
-    lazy var int1Label: SKLabelNode = {
-        var label = SKLabelNode(fontNamed: "Arial-BoldMT")
-        label.fontSize = 20
-        label.fontColor = SKColor.black
-        label.position = CGPoint(x:  -220, y: 0.5 )
-        label.text = "Clique Esquerdo: Destrua Moto-Serras"
-        return label
-    }()
-    
-    lazy var int2Label: SKLabelNode = {
-        var label = SKLabelNode(fontNamed: "Arial-BoldMT")
-        label.fontSize = 20
-        label.fontColor = SKColor.black
-        label.position = CGPoint(x:  220, y: 0.5 )
-        label.text = "Clique Direito: Pulo e Pulo Duplo"
-        return label
-    }()
     
     override func didMove(to view: SKView) {
         
-        let gameScene = GameScene(size: self.size)
-        highScoreLabel.text = "Maior Pontuação: \(gameScene.highestScore)"
-        playButton = SKSpriteNode(texture: playButtonTex)
-        playButton.size = CGSize(width: 45, height: 45)
-        playButton.position = CGPoint(x: 0.5, y: 0.5)
-        self.backgroundColor = .white
+        //colocando lettering
+        playButton.size = CGSize(width: (1.1)*1204/3, height: (1.1)*875/3)
+        playButton.position = CGPoint(x: 180, y: 20)
+        playButton.zPosition = 1
+        self.animateLettering(playButton)
         self.addChild(playButton)
-        self.addChild(highScoreLabel)
-        self.addChild(int1Label)
-        self.addChild(int2Label)
+        
+        //colocando background
+        background.size = CGSize(width: UIScreen.main.bounds.maxX, height: UIScreen.main.bounds.maxY)
+        background.zPosition = -1
+        self.animateBackground(background)
+        self.addChild(background)
+        
+        //colocando botoes
+        comoJogarButton.size = CGSize(width: 822/3, height: 265/3)
+        comoJogarButton.position = CGPoint(x: (-1/2)*UIScreen.main.bounds.maxX+822/6, y: (1/8)*UIScreen.main.bounds.maxY)
+        comoJogarButton.zPosition = 1
+        self.animateComoJogarButton(comoJogarButton)
+        self.addChild(comoJogarButton)
+        
+        universoExpandidoButton.size = CGSize(width: 999/3, height: 265/3)
+        universoExpandidoButton.position = CGPoint(x: (-1/2)*UIScreen.main.bounds.maxX+999/6, y: (-1/6)*UIScreen.main.bounds.maxY)
+        universoExpandidoButton.zPosition = 1
+        self.animateUniversoExpandidoButton(universoExpandidoButton)
+        self.addChild(universoExpandidoButton)
+        
+        
     }
     
     
@@ -60,14 +55,48 @@ class GameMenuScene: SKScene,SKPhysicsContactDelegate
         if let touch = touches.first {
             let pos = touch.location(in: self)
             let node = self.atPoint(pos)
-            if node == playButton {
+            
+            switch node {
+            case playButton:
                 let scene = GameScene(size: self.size)
                 scene.anchorPoint = CGPoint(x: 0.5, y: 0.5)
                 let skView = view as! SKView
                 skView.presentScene(scene)
+            
+            case comoJogarButton:
+                print("clicked comoJogarButton")
+                
+            case universoExpandidoButton:
+                print("clicked universoExpandidoButton")
+                
+            case ajustesButton:
+                print("clicked ajustesButton")
+                
+            default: break
             }
+            
         }
     }
     
+    
+}
+
+extension GameMenuScene {
+    
+    func animateLettering(_ playButton: SKSpriteNode) {
+        playButton.run(SKAction.repeatForever(SKAction.animate(with: [SKTexture(imageNamed: "logotipoejogar-1.png"), SKTexture(imageNamed: "logotipoejogar-2.png"), SKTexture(imageNamed: "logotipoejogar-3.png"), SKTexture(imageNamed: "logotipoejogar-2.png")], timePerFrame: 1/7)))
+    }
+    
+    func animateBackground(_ background: SKSpriteNode) {
+        background.run(SKAction.repeatForever(SKAction.animate(with: [SKTexture(imageNamed: "fundoComNuvem-1.png"), SKTexture(imageNamed: "fundoComNuvem-2.png"), SKTexture(imageNamed: "fundoComNuvem-3.png"), SKTexture(imageNamed: "fundoComNuvem-2.png")], timePerFrame: 1/7)))
+    }
+    
+    func animateUniversoExpandidoButton(_ universoExpandidoButton: SKSpriteNode) {
+        universoExpandidoButton.run(SKAction.repeatForever(SKAction.animate(with: [SKTexture(imageNamed: "universoexpandido-1.png"), SKTexture(imageNamed: "universoexpandido-2.png"), SKTexture(imageNamed: "universoexpandido-3.png"), SKTexture(imageNamed: "universoexpandido-2.png")], timePerFrame: 1/7)))
+    }
+    
+    func animateComoJogarButton(_ comoJogarButton: SKSpriteNode) {
+        comoJogarButton.run(SKAction.repeatForever(SKAction.animate(with: [SKTexture(imageNamed: "comojogar-1.png"), SKTexture(imageNamed: "comojogar-2.png"), SKTexture(imageNamed: "comojogar-3.png"), SKTexture(imageNamed: "comojogar-2.png")], timePerFrame: 1/7)))
+    }
     
 }
