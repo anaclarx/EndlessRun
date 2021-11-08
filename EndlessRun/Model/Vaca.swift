@@ -13,7 +13,7 @@ class Vaca: SKSpriteNode{
     private let platform: Ground = Ground()
     var vacaFrames: [SKTexture] = []
     private var vaca = SKSpriteNode()
-    static var actualDuration = 4.0
+    static var actualDuration = 3.25
     
     func random() -> CGFloat {
         return CGFloat(Float(arc4random()) / 0xFFFFFFFF)

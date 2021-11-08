@@ -18,6 +18,14 @@ class GameMenuScene: SKScene,SKPhysicsContactDelegate
     var universoExpandidoButton = SKSpriteNode()
     var ajustesButton = SKSpriteNode() //ainda nao foi implementado
     
+    var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            return .landscape
+        } else {
+            return .landscape
+        }
+        
+    }
     
     override func didMove(to view: SKView) {
         
