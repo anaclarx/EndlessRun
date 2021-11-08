@@ -75,7 +75,9 @@ class GameMenuScene: SKScene,SKPhysicsContactDelegate
                 print("clicked comoJogarButton")
                 
             case universoExpandidoButton:
-                print("clicked universoExpandidoButton")
+                if let url = URL(string: "https://www.hicetnunc.xyz/criptosisifo") {
+                    UIApplication.shared.open(url)
+                }
                 
             case ajustesButton:
                 print("clicked ajustesButton")
