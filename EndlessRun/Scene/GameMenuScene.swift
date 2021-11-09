@@ -72,7 +72,10 @@ class GameMenuScene: SKScene,SKPhysicsContactDelegate
                 skView.presentScene(scene)
             
             case comoJogarButton:
-                print("clicked comoJogarButton")
+                let scene = HowToPlayScene(size: self.size)
+                scene.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+                let skView = view! as SKView
+                skView.presentScene(scene)
                 
             case universoExpandidoButton:
                 if let url = URL(string: "https://www.hicetnunc.xyz/criptosisifo") {

@@ -36,6 +36,7 @@
 		0ACA7D01273487EC008FBFCC /* jump.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0ACA7D00273487EC008FBFCC /* jump.wav */; };
 		0AE72CB827233B680053BC54 /* ACTPlayerStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE72CB727233B680053BC54 /* ACTPlayerStats.swift */; };
 		0AE72CBA27234CAE0053BC54 /* HighScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE72CB927234CAE0053BC54 /* HighScore.swift */; };
+		2EB2B465273AEE8800618D06 /* HowToPlayScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB2B464273AEE8800618D06 /* HowToPlayScene.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -91,6 +92,7 @@
 		0ACA7D00273487EC008FBFCC /* jump.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = jump.wav; sourceTree = "<group>"; };
 		0AE72CB727233B680053BC54 /* ACTPlayerStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACTPlayerStats.swift; sourceTree = "<group>"; };
 		0AE72CB927234CAE0053BC54 /* HighScore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighScore.swift; sourceTree = "<group>"; };
+		2EB2B464273AEE8800618D06 /* HowToPlayScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayScene.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -202,6 +204,7 @@
 				0ACA7CF8273487D3008FBFCC /* botoes.wav */,
 				0A2CA97426EA785B0025291B /* GameMenuScene.swift */,
 				0A2CA94926E0065E0025291B /* GameScene.swift */,
+				2EB2B464273AEE8800618D06 /* HowToPlayScene.swift */,
 			);
 			path = Scene;
 			sourceTree = "<group>";
@@ -363,6 +366,7 @@
 				0ACA7CF5273476A8008FBFCC /* Nuvem.swift in Sources */,
 				0A5C5F7D26F3AEB100171D67 /* GameState.swift in Sources */,
 				0A2CA94C26E0065E0025291B /* GameViewController.swift in Sources */,
+				2EB2B465273AEE8800618D06 /* HowToPlayScene.swift in Sources */,
 				0A2CA97526EA785B0025291B /* GameMenuScene.swift in Sources */,
 				0A5C5F8326F4FA0200171D67 /* Ground.swift in Sources */,
 				0A2CA94426E0065E0025291B /* AppDelegate.swift in Sources */,
