@@ -61,12 +61,15 @@ class GameMenuScene: SKScene,SKPhysicsContactDelegate
                 scene.anchorPoint = CGPoint(x: 0.5, y: 0.5)
                 let skView = view as! SKView
                 skView.presentScene(scene)
+                playButton.run(SKAction.playSoundFileNamed("botoes.wav", waitForCompletion: false))
             
             case comoJogarButton:
                 print("clicked comoJogarButton")
+                comoJogarButton.run(SKAction.playSoundFileNamed("botoes.wav", waitForCompletion: false))
                 
             case universoExpandidoButton:
                 print("clicked universoExpandidoButton")
+                universoExpandidoButton.run(SKAction.playSoundFileNamed("botoes.wav", waitForCompletion: false))
                 
             case ajustesButton:
                 print("clicked ajustesButton")
