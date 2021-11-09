@@ -18,15 +18,6 @@ class GameMenuScene: SKScene,SKPhysicsContactDelegate
     var universoExpandidoButton = SKSpriteNode()
     var ajustesButton = SKSpriteNode() //ainda nao foi implementado
     
-    var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        if UIDevice.current.userInterfaceIdiom == .phone {
-            return .landscape
-        } else {
-            return .landscape
-        }
-        
-    }
-    
     override func didMove(to view: SKView) {
         
         //colocando lettering
@@ -37,7 +28,7 @@ class GameMenuScene: SKScene,SKPhysicsContactDelegate
         self.addChild(playButton)
         
         //colocando background
-        background.size = CGSize(width: UIScreen.main.bounds.maxX, height: UIScreen.main.bounds.maxY)
+        background.size = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
         background.zPosition = -1
         self.animateBackground(background)
         self.addChild(background)
