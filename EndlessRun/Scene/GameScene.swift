@@ -232,6 +232,12 @@ extension GameScene: SKPhysicsContactDelegate {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if(isGameEnded){
             reset()
+            //vamos retornar para o menu quando o jogo acabar
+            let scene = GameMenuScene(size: self.size)
+            scene.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+            let skView = view! as SKView
+            skView.presentScene(scene)
+            
             return
         }
         for t in touches {
