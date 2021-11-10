@@ -83,17 +83,17 @@ class GameScene: SKScene {
     }()
     
     var gameOver: SKSpriteNode = {
-        let gameOver = SKSpriteNode(imageNamed: "gameOver")
-        gameOver.size = CGSize(width: UIScreen.main.bounds.width / 3, height: UIScreen.main.bounds.height / 3)
+        let gameOver = SKSpriteNode()
+        gameOver.size = CGSize(width: 1382/2, height: 787/2)
         gameOver.position = CGPoint(x: 0, y: 0 + 20)
         return gameOver
     }()
     
     lazy var tapLabel: SKLabelNode = {
-        var label = SKLabelNode(fontNamed: "Arial-BoldMT")
+        var label = SKLabelNode(fontNamed: "LeagueGothic-Italic")
         label.fontSize = 20
-        label.fontColor = SKColor.black
-        label.position = CGPoint(x:  gameOver.position.x, y: -50 )
+        label.fontColor = SKColor.white
+        label.position = CGPoint(x:  gameOver.position.x, y: gameOver.position.y - 787/4 - 10)
         label.text = "Tap anywhere to try again"
         return label
     }()
@@ -168,6 +168,7 @@ class GameScene: SKScene {
         arrayFlyObst.removeAll()
         arrayObst.removeAll()
         velocityBackground = 0
+        self.animateGameOver(gameOver: gameOver)
         addChild(gameOver)
         addChild(tapLabel)
     }
@@ -493,6 +494,10 @@ extension GameScene{
     
     func animateVaca(cow: Vaca){
         vaca.run(SKAction.repeatForever(SKAction.animate(with: vaca.vacaFrames,timePerFrame: 0.2,resize: false,restore: true)), withKey: "animateVaca")
+    }
+    
+    func animateGameOver(gameOver: SKSpriteNode) {
+        gameOver.run(SKAction.repeatForever(SKAction.animate(with: [SKTexture(imageNamed: "game over 1.png"), SKTexture(imageNamed: "game over 2.png")], timePerFrame: 1/7)))
     }
     
     
