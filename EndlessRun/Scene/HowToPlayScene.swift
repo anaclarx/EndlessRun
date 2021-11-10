@@ -12,6 +12,7 @@ class HowToPlayScene: SKScene {
     
     var background: SKSpriteNode = SKSpriteNode()
     var howToPlayBoard: SKSpriteNode = SKSpriteNode()
+    var exitButton: SKSpriteNode = SKSpriteNode()
     
     var startTouch: CGPoint = CGPoint()
     var boardPosition: CGPoint = CGPoint(x: 829, y: 0)
@@ -31,13 +32,17 @@ class HowToPlayScene: SKScene {
         background.texture = SKTexture(imageNamed: "fundoComNuvem-1.png")
         self.addChild(background)
         
-    
-        
         howToPlayBoard.size = CGSize(width: 2495, height: 380)
         howToPlayBoard.position = boardPosition
         howToPlayBoard.zPosition = 0
         howToPlayBoard.texture = SKTexture(imageNamed: "comojogarInteiro.png")
         self.addChild(howToPlayBoard)
+        
+        exitButton.size = CGSize(width: 138/3, height: 147/3)
+        exitButton.position = CGPoint(x: UIScreen.main.bounds.midX - 100, y: 380/2 - 30)
+        exitButton.zPosition = 1
+        exitButton.texture = SKTexture(imageNamed: "exitButton.png")
+        self.addChild(exitButton)
         
         bolinha1.position = CGPoint(x: xBolinhas - 25, y: yBolinhas)
         bolinha1.zPosition = 1000
@@ -65,7 +70,7 @@ class HowToPlayScene: SKScene {
             boardPosition = howToPlayBoard.position
             
             let touchedNode = self.atPoint(location)
-            if touchedNode != howToPlayBoard {
+            if (touchedNode != howToPlayBoard) || (touchedNode == exitButton) {
                 let scene = GameMenuScene(size: self.size)
                 scene.anchorPoint = CGPoint(x: 0.5, y: 0.5)
                 let skView = view! as SKView
