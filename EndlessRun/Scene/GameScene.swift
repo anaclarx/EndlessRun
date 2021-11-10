@@ -75,10 +75,10 @@ class GameScene: SKScene {
     
     lazy var scoreLabel: SKLabelNode = {
         var label = SKLabelNode(fontNamed: "LeagueGothic-Italic")
-        label.fontSize = 20
+        label.fontSize = 40
         label.fontColor = SKColor.white
         label.position = CGPoint(x:  (-0.85)*UIScreen.main.bounds.midX, y: (0.8)*UIScreen.main.bounds.midY )
-        label.text = "Points: 0"
+        label.text = "0"
         return label
     }()
     
@@ -94,7 +94,7 @@ class GameScene: SKScene {
         label.fontSize = 20
         label.fontColor = SKColor.white
         label.position = CGPoint(x:  gameOver.position.x, y: gameOver.position.y - 787/4 - 10)
-        label.text = "Tap anywhere to try again"
+        label.text = "Clique em qualquer lugar"
         return label
     }()
     
@@ -542,7 +542,7 @@ extension GameScene{
     
     func adjustScore(by points: Int) {
         score += points
-        scoreLabel.text = "Points: \(score)"
+        scoreLabel.text = String(score)
         
     }
     func playerCollideWithPoint(point: SKSpriteNode, monster: SKSpriteNode) {
