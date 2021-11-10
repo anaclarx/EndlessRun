@@ -57,11 +57,11 @@ class GameMenuScene: SKScene,SKPhysicsContactDelegate
             
             switch node {
             case playButton:
+                playButton.run(SKAction.playSoundFileNamed("botoes.wav", waitForCompletion: false))
                 let scene = GameScene(size: self.size)
                 scene.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-                let skView = view as! SKView
+                let skView = view! as SKView
                 skView.presentScene(scene)
-                playButton.run(SKAction.playSoundFileNamed("botoes.wav", waitForCompletion: false))
             
             case comoJogarButton:
                 comoJogarButton.run(SKAction.playSoundFileNamed("botoes.wav", waitForCompletion: false))
@@ -69,10 +69,8 @@ class GameMenuScene: SKScene,SKPhysicsContactDelegate
                 scene.anchorPoint = CGPoint(x: 0.5, y: 0.5)
                 let skView = view! as SKView
                 skView.presentScene(scene)
-                
+            
             case universoExpandidoButton:
-                universoExpandidoButton.run(SKAction.playSoundFileNamed("botoes.wav", waitForCompletion: false))
-                print("clicked universoExpandidoButton")
                 universoExpandidoButton.run(SKAction.playSoundFileNamed("botoes.wav", waitForCompletion: false))
                 if let url = URL(string: "https://www.hicetnunc.xyz/criptosisifo") {
                     UIApplication.shared.open(url)

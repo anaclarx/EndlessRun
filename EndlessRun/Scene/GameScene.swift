@@ -74,10 +74,10 @@ class GameScene: SKScene {
     var isJumping = false
     
     lazy var scoreLabel: SKLabelNode = {
-        var label = SKLabelNode(fontNamed: "Arial-BoldMT")
+        var label = SKLabelNode(fontNamed: "LeagueGothic-Italic")
         label.fontSize = 20
         label.fontColor = SKColor.white
-        label.position = CGPoint(x:  -190, y: 120 )
+        label.position = CGPoint(x:  (-0.85)*UIScreen.main.bounds.midX, y: (0.8)*UIScreen.main.bounds.midY )
         label.text = "Points: 0"
         return label
     }()
