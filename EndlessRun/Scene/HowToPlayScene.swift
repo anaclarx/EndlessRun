@@ -96,7 +96,7 @@ class HowToPlayScene: SKScene {
             switch boardPosition.x {
             case 829:
                 switch xPosition {
-                case 0..<(829 - sensibility):
+                case -1000000..<(829 - sensibility):
                     self.bolinha1.itIsNotMe()
                     self.bolinha2.itIsMe()
                     self.bolinha3.itIsNotMe()
@@ -109,12 +109,12 @@ class HowToPlayScene: SKScene {
                 }
             case 92:
                 switch xPosition {
-                case (92 + sensibility)..<1000:
+                case (92 + sensibility)..<1000000:
                     self.bolinha1.itIsMe()
                     self.bolinha2.itIsNotMe()
                     self.bolinha3.itIsNotMe()
                     xPosition = 829
-                case -900..<(92 - sensibility):
+                case -1000000..<(92 - sensibility):
                     self.bolinha1.itIsNotMe()
                     self.bolinha2.itIsNotMe()
                     self.bolinha3.itIsMe()
@@ -127,7 +127,7 @@ class HowToPlayScene: SKScene {
                 }
             case -847:
                 switch xPosition {
-                case (-847 + sensibility)..<200:
+                case (-847 + sensibility)..<1000000:
                     self.bolinha1.itIsNotMe()
                     self.bolinha2.itIsMe()
                     self.bolinha3.itIsNotMe()
@@ -139,6 +139,10 @@ class HowToPlayScene: SKScene {
                     xPosition = -847
                 }
             default:
+                self.bolinha1.itIsNotMe()
+                self.bolinha2.itIsMe()
+                self.bolinha3.itIsNotMe()
+                xPosition = 92
                 break
             }
             
