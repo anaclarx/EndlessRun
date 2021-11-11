@@ -36,6 +36,7 @@
 		0ACA7D01273487EC008FBFCC /* jump.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0ACA7D00273487EC008FBFCC /* jump.wav */; };
 		0AE72CB827233B680053BC54 /* ACTPlayerStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE72CB727233B680053BC54 /* ACTPlayerStats.swift */; };
 		0AE72CBA27234CAE0053BC54 /* HighScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE72CB927234CAE0053BC54 /* HighScore.swift */; };
+		2E8988F5273D8A5300E18200 /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E8988F4273D8A5300E18200 /* GameOverScene.swift */; };
 		2EB2B465273AEE8800618D06 /* HowToPlayScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB2B464273AEE8800618D06 /* HowToPlayScene.swift */; };
 		2EDC6B63273C4A3D00FB42FD /* LeagueGothic-Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2EDC6B62273C4A3D00FB42FD /* LeagueGothic-Italic.otf */; };
 /* End PBXBuildFile section */
@@ -93,6 +94,7 @@
 		0ACA7D00273487EC008FBFCC /* jump.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = jump.wav; sourceTree = "<group>"; };
 		0AE72CB727233B680053BC54 /* ACTPlayerStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACTPlayerStats.swift; sourceTree = "<group>"; };
 		0AE72CB927234CAE0053BC54 /* HighScore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighScore.swift; sourceTree = "<group>"; };
+		2E8988F4273D8A5300E18200 /* GameOverScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
 		2EB2B464273AEE8800618D06 /* HowToPlayScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayScene.swift; sourceTree = "<group>"; };
 		2EDC6B62273C4A3D00FB42FD /* LeagueGothic-Italic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "LeagueGothic-Italic.otf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -206,6 +208,7 @@
 				0ACA7CF8273487D3008FBFCC /* botoes.wav */,
 				0A2CA97426EA785B0025291B /* GameMenuScene.swift */,
 				0A2CA94926E0065E0025291B /* GameScene.swift */,
+				2E8988F4273D8A5300E18200 /* GameOverScene.swift */,
 				2EDC6B62273C4A3D00FB42FD /* LeagueGothic-Italic.otf */,
 				2EB2B464273AEE8800618D06 /* HowToPlayScene.swift */,
 			);
@@ -376,6 +379,7 @@
 				0A2CA94426E0065E0025291B /* AppDelegate.swift in Sources */,
 				0A175D8B26FBA1BC00DBDB4A /* Points.swift in Sources */,
 				0ACA7CF327346B56008FBFCC /* Lama.swift in Sources */,
+				2E8988F5273D8A5300E18200 /* GameOverScene.swift in Sources */,
 				0A2CA97726EA786E0025291B /* GameMenuViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -555,7 +559,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "br.puc-rio.inf.les.developeracademy.ignis";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -575,7 +579,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "br.puc-rio.inf.les.developeracademy.ignis";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

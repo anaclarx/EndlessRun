@@ -75,9 +75,9 @@ class GameScene: SKScene {
     
     lazy var scoreLabel: SKLabelNode = {
         var label = SKLabelNode(fontNamed: "LeagueGothic-Italic")
-        label.fontSize = 40
+        label.fontSize = 60
         label.fontColor = SKColor.white
-        label.position = CGPoint(x:  (-0.85)*UIScreen.main.bounds.midX, y: (0.8)*UIScreen.main.bounds.midY )
+        label.position = CGPoint(x:  (-0.85)*UIScreen.main.bounds.midX, y: (0.65)*UIScreen.main.bounds.midY )
         label.text = "0"
         return label
     }()
@@ -158,7 +158,12 @@ class GameScene: SKScene {
             UserDefaults.standard.set(score, forKey: "highScore")
         }
         isGameEnded = true
-        physicsWorld.speed = 0
+        reset()
+        let scene = GameOverScene(size: self.size)
+        scene.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        let skView = view! as SKView
+        skView.presentScene(scene)
+       /* physicsWorld.speed = 0
         isUserInteractionEnabled = true
         for flyobs in arrayFlyObst {
             flyobs.removeFromParent()
@@ -170,7 +175,7 @@ class GameScene: SKScene {
         velocityBackground = 0
         self.animateGameOver(gameOver: gameOver)
         addChild(gameOver)
-        addChild(tapLabel)
+        addChild(tapLabel) */
     }
     
     func runActionNodes(){
