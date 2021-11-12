@@ -24,20 +24,20 @@ class GameOverScene: SKScene {
         self.addChild(background)
         
         self.animateGameOver(gameOverLettering)
-        gameOverLettering.size = CGSize(width: 1382/2.5, height: 787/2.5)
-        gameOverLettering.position = CGPoint(x: 0, y: -30)
+        gameOverLettering.size = CGSize(width: 1382/3, height: 787/3)
+        gameOverLettering.position = CGPoint(x: 0, y: 40)
         gameOverLettering.zPosition = 0
         self.addChild(gameOverLettering)
         
         self.animateReplayButton(replayButton)
         replayButton.size = CGSize(width: 588/3, height: 265/3)
-        replayButton.position = CGPoint(x: UIScreen.main.bounds.midX/1.4, y: UIScreen.main.bounds.midY/2.5)
+        replayButton.position = CGPoint(x: UIScreen.main.bounds.midX/3.5, y: (-1)*UIScreen.main.bounds.midY/1.5)
         replayButton.zPosition = 1
         self.addChild(replayButton)
         
         self.animateMenuButton(menuButton)
         menuButton.size = CGSize(width: 588/3, height: 265/3)
-        menuButton.position = CGPoint(x: (-1)*UIScreen.main.bounds.midX/1.4, y: UIScreen.main.bounds.midY/2.5)
+        menuButton.position = CGPoint(x: (-1)*UIScreen.main.bounds.midX/3.5, y: (-1)*UIScreen.main.bounds.midY/1.5)
         menuButton.zPosition = 1
         self.addChild(menuButton)
         
