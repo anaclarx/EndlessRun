@@ -40,6 +40,8 @@ class GameScene: SKScene {
     
     private let vaca: Vaca = Vaca()
     
+    private var fogo: SKSpriteNode = SKSpriteNode()
+    
     var music: SKAudioNode!
     
     var jumpSound: SKAudioNode!
@@ -128,6 +130,7 @@ class GameScene: SKScene {
         setUpScenario()
         createBackground()
         createRectangle()
+        addFire()
     }
     
     override func update(_ currentTime: TimeInterval) {
@@ -226,6 +229,14 @@ class GameScene: SKScene {
     func setUpScenario(){
         runActionNodes()
         addChild(platform)
+    }
+    
+    func addFire(){
+        animateFogo(fogo: fogo)
+        fogo.size = CGSize(width: 570, height: 868)
+        fogo.position = CGPoint(x: 0, y: 0)
+        fogo.zPosition = 100
+        self.addChild(fogo)
     }
     
 }
@@ -504,11 +515,11 @@ extension GameScene{
     }
     
     func animateVaca(cow: Vaca){
-        vaca.run(SKAction.repeatForever(SKAction.animate(with: vaca.vacaFrames,timePerFrame: 0.2,resize: false,restore: true)), withKey: "animateVaca")
+        vaca.run(SKAction.repeatForever(SKAction.animate(with: [SKTexture(imageNamed: "vaca 1.png"), SKTexture(imageNamed: "vaca 2.png"), SKTexture(imageNamed: "vaca 3.png"), SKTexture(imageNamed: "vaca 4.png")],timePerFrame: 0.2,resize: false,restore: true)), withKey: "animateVaca")
     }
     
-    func animateGameOver(gameOver: SKSpriteNode) {
-        gameOver.run(SKAction.repeatForever(SKAction.animate(with: [SKTexture(imageNamed: "game over 1.png"), SKTexture(imageNamed: "game over 2.png")], timePerFrame: 1/7)))
+    func animateFogo(fogo: SKSpriteNode) {
+        gameOver.run(SKAction.repeatForever(SKAction.animate(with: [SKTexture(imageNamed: "fogo 1.png"), SKTexture(imageNamed: "fogo 2.png")], timePerFrame: 1/7)))
     }
     
     
