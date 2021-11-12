@@ -24,20 +24,20 @@ class GameOverScene: SKScene {
         self.addChild(background)
         
         self.animateGameOver(gameOverLettering)
-        gameOverLettering.size = CGSize(width: 1382/3, height: 787/3)
+        gameOverLettering.size = CGSize(width: 1382/2.5, height: 787/2.5)
         gameOverLettering.position = CGPoint(x: 0, y: -30)
         gameOverLettering.zPosition = 0
         self.addChild(gameOverLettering)
         
-        replayButton.texture = SKTexture(imageNamed: "rejogar.png")
-        replayButton.size = CGSize(width: 384/2, height: 194/2)
-        replayButton.position = CGPoint(x: UIScreen.main.bounds.midX/2, y: UIScreen.main.bounds.midY/1.5)
+        self.animateReplayButton(replayButton)
+        replayButton.size = CGSize(width: 588/3, height: 265/3)
+        replayButton.position = CGPoint(x: UIScreen.main.bounds.midX/1.4, y: UIScreen.main.bounds.midY/2.5)
         replayButton.zPosition = 1
         self.addChild(replayButton)
         
-        menuButton.texture = SKTexture(imageNamed: "menu.png")
-        menuButton.size = CGSize(width: 280/2, height: 181/2)
-        menuButton.position = CGPoint(x: (-1)*UIScreen.main.bounds.midX/2, y: UIScreen.main.bounds.midY/1.5)
+        self.animateMenuButton(menuButton)
+        menuButton.size = CGSize(width: 588/3, height: 265/3)
+        menuButton.position = CGPoint(x: (-1)*UIScreen.main.bounds.midX/1.4, y: UIScreen.main.bounds.midY/2.5)
         menuButton.zPosition = 1
         self.addChild(menuButton)
         
@@ -85,11 +85,11 @@ extension GameOverScene {
     }
     
     func animateReplayButton (_ button: SKSpriteNode) {
-        
+        button.run(SKAction.repeatForever(SKAction.animate(with: [SKTexture(imageNamed: "jogargameover-1.png"), SKTexture(imageNamed: "jogargameover-2.png"), SKTexture(imageNamed: "jogargameover-3.png"), SKTexture(imageNamed: "jogargameover-2.png")], timePerFrame: 1/7)))
     }
     
     func animateMenuButton (_ button: SKSpriteNode) {
-        
+        button.run(SKAction.repeatForever(SKAction.animate(with: [SKTexture(imageNamed: "menugameover-1.png"), SKTexture(imageNamed: "menugameover-2.png"), SKTexture(imageNamed: "menugameover-3.png"), SKTexture(imageNamed: "menugameover-2.png")], timePerFrame: 1/7)))
     }
     
 }
