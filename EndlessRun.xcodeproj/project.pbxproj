@@ -34,6 +34,7 @@
 		0ACA7CFD273487E0008FBFCC /* die.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0ACA7CFC273487E0008FBFCC /* die.wav */; };
 		0ACA7CFF273487E7008FBFCC /* attack.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0ACA7CFE273487E7008FBFCC /* attack.wav */; };
 		0ACA7D01273487EC008FBFCC /* jump.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0ACA7D00273487EC008FBFCC /* jump.wav */; };
+		0AE25EAC27441E6900535742 /* Fogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE25EAB27441E6900535742 /* Fogo.swift */; };
 		0AE72CB827233B680053BC54 /* ACTPlayerStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE72CB727233B680053BC54 /* ACTPlayerStats.swift */; };
 		0AE72CBA27234CAE0053BC54 /* HighScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE72CB927234CAE0053BC54 /* HighScore.swift */; };
 		2E8988F5273D8A5300E18200 /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E8988F4273D8A5300E18200 /* GameOverScene.swift */; };
@@ -92,6 +93,7 @@
 		0ACA7CFC273487E0008FBFCC /* die.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = die.wav; sourceTree = "<group>"; };
 		0ACA7CFE273487E7008FBFCC /* attack.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = attack.wav; sourceTree = "<group>"; };
 		0ACA7D00273487EC008FBFCC /* jump.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = jump.wav; sourceTree = "<group>"; };
+		0AE25EAB27441E6900535742 /* Fogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fogo.swift; sourceTree = "<group>"; };
 		0AE72CB727233B680053BC54 /* ACTPlayerStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACTPlayerStats.swift; sourceTree = "<group>"; };
 		0AE72CB927234CAE0053BC54 /* HighScore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighScore.swift; sourceTree = "<group>"; };
 		2E8988F4273D8A5300E18200 /* GameOverScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
@@ -193,6 +195,7 @@
 				0ACA7CF227346B56008FBFCC /* Lama.swift */,
 				0ACA7CF4273476A8008FBFCC /* Nuvem.swift */,
 				0A8769FB2735A56D0092C85F /* Vaca.swift */,
+				0AE25EAB27441E6900535742 /* Fogo.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -365,6 +368,7 @@
 			files = (
 				0A8769FC2735A56D0092C85F /* Vaca.swift in Sources */,
 				0A5C5F7F26F4F6EB00171D67 /* Obstacle.swift in Sources */,
+				0AE25EAC27441E6900535742 /* Fogo.swift in Sources */,
 				0ABD61BF26FCEBE70008BC77 /* FlyingObstacle.swift in Sources */,
 				0A5C5F8126F4F8A500171D67 /* PhysicsCategory.swift in Sources */,
 				0AE72CBA27234CAE0053BC54 /* HighScore.swift in Sources */,
@@ -549,8 +553,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
-				DEVELOPMENT_TEAM = 56VPL9X84A;
+				CURRENT_PROJECT_VERSION = 8;
+				DEVELOPMENT_TEAM = U6DL889KZ9;
 				INFOPLIST_FILE = EndlessRun/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -569,8 +573,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
-				DEVELOPMENT_TEAM = 56VPL9X84A;
+				CURRENT_PROJECT_VERSION = 8;
+				DEVELOPMENT_TEAM = U6DL889KZ9;
 				INFOPLIST_FILE = EndlessRun/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
