@@ -72,7 +72,7 @@ class GameMenuScene: SKScene,SKPhysicsContactDelegate
             
             case universoExpandidoButton:
                 universoExpandidoButton.run(SKAction.playSoundFileNamed("botoes.wav", waitForCompletion: false))
-                if let url = URL(string: "https://twitter.com/cripto_sisifo") {
+                if let url = URL(string: "https://hicetnunc.art/criptosisifo") {
                     UIApplication.shared.open(url)
                 }
                 
